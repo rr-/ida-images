@@ -25,6 +25,9 @@ class MemoryReader(object):
         valid_memory_ranges = []
         for i in range(segment_count):
             segment = getnseg(i)
+            #skip segments with unstable data
+            if segment.type == SEG_XTRN:
+                continue
             valid_memory_ranges.append(
                 MemoryRange(segment.startEA, segment.endEA))
 
