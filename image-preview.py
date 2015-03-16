@@ -135,10 +135,6 @@ class ImagePreviewForm(PluginForm):
             self.draw()
 
     def draw(self):
-        print 'drawing at ' + str(self.parameters.address)
-        print 'width: ' + str(self.parameters.width)
-        print 'height: ' + str(self.parameters.height)
-
         channels = 4
         format = QtGui.QImage.Format_RGB888
         byte_count = self.parameters.width * self.parameters.height * channels
