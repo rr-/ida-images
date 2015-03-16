@@ -109,7 +109,7 @@ class ImagePreviewForm(PluginForm):
         layout.addWidget(height_box)
 
     def addGotoButton(self, layout):
-        button_goto = QtGui.QPushButton('&Jump to...')
+        button_goto = QtGui.QPushButton('&Go to address... [G]')
         button_goto.setDefault(True)
         button_goto.clicked.connect(self.choose)
         layout.addWidget(button_goto)
