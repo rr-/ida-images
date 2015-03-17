@@ -83,14 +83,19 @@ class ImagePreviewForm(PluginForm):
 
     def populateForm(self):
         layout = QtGui.QVBoxLayout()
+
         toolbar = QtGui.QHBoxLayout()
         self.addWidthBox(toolbar)
         self.addHeightBox(toolbar)
         self.addGotoButton(toolbar)
         toolbar.addStretch()
+
         self.image_label = QtGui.QLabel()
+        scroll_area = QtGui.QScrollArea()
+        scroll_area.setWidget(self.image_label)
+        scroll_area.setWidgetResizable(True)
         layout.addLayout(toolbar)
-        layout.addWidget(self.image_label)
+        layout.addWidget(scroll_area)
         self.parent.setLayout(layout)
 
     def addWidthBox(self, layout):
