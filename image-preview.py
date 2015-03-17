@@ -87,12 +87,14 @@ class ImagePreviewForm(PluginForm):
         self.addWidthBox(toolbar)
         self.addHeightBox(toolbar)
         self.addGotoButton(toolbar)
+        toolbar.addStretch()
         self.image_label = QtGui.QLabel()
         layout.addLayout(toolbar)
         layout.addWidget(self.image_label)
         self.parent.setLayout(layout)
 
     def addWidthBox(self, layout):
+        layout.addWidget(QtGui.QLabel('Width:'))
         width_box = QtGui.QSpinBox()
         width_box.setMinimum(1)
         width_box.setMaximum(2000)
@@ -101,6 +103,7 @@ class ImagePreviewForm(PluginForm):
         layout.addWidget(width_box)
 
     def addHeightBox(self, layout):
+        layout.addWidget(QtGui.QLabel('Height:'))
         height_box = QtGui.QSpinBox()
         height_box.setMinimum(1)
         height_box.setMaximum(2000)
