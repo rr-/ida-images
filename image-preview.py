@@ -88,6 +88,7 @@ class ImagePreviewForm(PluginForm):
         self.addWidthBox(toolbar)
         self.addHeightBox(toolbar)
         self.addGotoButton(toolbar)
+        self.addSaveButton(toolbar)
         toolbar.addStretch()
 
         self.image_label = QtGui.QLabel()
@@ -128,6 +129,11 @@ class ImagePreviewForm(PluginForm):
             self.choose,
             context=QtCore.Qt.ApplicationShortcut)
 
+    def addSaveButton(self, layout):
+        button_save = QtGui.QPushButton('&Save...')
+        button_save.clicked.connect(self.save)
+        layout.addWidget(button_save)
+
     def widthChanged(self, newWidth):
         self.parameters.width = newWidth
         self.draw()
@@ -141,6 +147,11 @@ class ImagePreviewForm(PluginForm):
         if address is not None:
             self.parameters.address = address
             self.draw()
+
+    def save(self):
+        path = AskFile(1, '*.png', 'Save the image as...')
+        if path is not None:
+            self.image_label.pixmap().save(path, 'PNG')
 
     def draw(self):
         channels = 4
