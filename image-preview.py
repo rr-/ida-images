@@ -68,11 +68,67 @@ class MemoryReader(object):
 
         return result
 
+class PixelFormats(object):
+    RGB888 = 'RGB (8-8-8)'
+    #RGB565 = 'RGB (5-6-5)'
+    #RGBA8888 = 'RGBA (8-8-8-8)'
+    #RGBA4444 = 'RGBA (4-4-4-4)'
+    #RGBA5658 = 'RGBA (5-6-5-8)'
+    ARGB8888 = 'ARGB (8-8-8-8)'
+    #ARGB4444 = 'ARGB (4-4-4-4)'
+    #ARGB5658 = 'ARGB (5-6-5-8)'
+    BGR888 = 'BGR (8-8-8)'
+    #BGR565 = 'BGR (5-6-5)'
+    #BGRA8888 = 'BGRA (8-8-8-8)'
+    #BGRA4444 = 'BGRA (4-4-4-4)'
+    #BGRA5658 = 'BGRA (5-6-5-8)'
+    ABGR8888 = 'ABGR (8-8-8-8)'
+    #ABGR4444 = 'ABGR (4-4-4-4)'
+    #ABGR5658 = 'ABGR (5-6-5-8)'
+    GRAY8 = 'Grayscale (8)'
+
 class DrawParameters(object):
     def __init__(self):
+        self.format = PixelFormats.RGB888
         self.width = 800
         self.height = 600
         self.address = GetEntryPoint(1)
+
+class Drawer(object):
+    FORMAT_MAP = \
+    {
+        PixelFormats.RGB888:   (3, QtGui.QImage.Format_RGB888, False),
+        PixelFormats.ARGB8888: (4, QtGui.QImage.Format_ARGB32, False),
+        PixelFormats.BGR888:   (3, QtGui.QImage.Format_RGB888, True),
+        PixelFormats.ABGR8888: (4, QtGui.QImage.Format_ARGB32, True),
+        PixelFormats.GRAY8:    (1, QtGui.QImage.Format_Indexed8, False),
+    }
+
+    def __init__(self, parameters):
+        self.parameters = parameters
+
+    def getPixmap(self):
+        bytes, qt_format, swap_rgb = self.getBytes()
+        image = QtGui.QImage(
+            bytes,
+            self.parameters.width,
+            self.parameters.height,
+            qt_format)
+        if swap_rgb:
+            image = image.rgbSwapped()
+        pixmap = QtGui.QPixmap()
+        pixmap.convertFromImage(image)
+        return pixmap
+
+    def getBytes(self):
+        if self.parameters.format not in self.FORMAT_MAP:
+            raise RuntimeError('Not implemented')
+
+        span, qt_format, swap_rgb = self.FORMAT_MAP[self.parameters.format]
+        byte_count = self.parameters.width * self.parameters.height * span
+        bytes = MemoryReader.read(self.parameters.address, byte_count)
+        assert(bytes is not None)
+        return bytes, qt_format, swap_rgb
 
 class ImagePreviewForm(PluginForm):
     def OnCreate(self, form):
@@ -85,6 +141,7 @@ class ImagePreviewForm(PluginForm):
         layout = QtGui.QVBoxLayout()
 
         toolbar = QtGui.QHBoxLayout()
+        self.addFormatBox(toolbar)
         self.addWidthBox(toolbar)
         self.addHeightBox(toolbar)
         self.addGotoButton(toolbar)
@@ -98,6 +155,20 @@ class ImagePreviewForm(PluginForm):
         layout.addLayout(toolbar)
         layout.addWidget(scroll_area)
         self.parent.setLayout(layout)
+
+    def addFormatBox(self, layout):
+        layout.addWidget(QtGui.QLabel('Format:'))
+        format_box = QtGui.QComboBox()
+        formats = [attr
+            for attr in dir(PixelFormats())
+            if not callable(attr) and not attr.startswith("__")]
+        for format in formats:
+            text = getattr(PixelFormats, format)
+            format_box.addItem(text, text)
+        format_box.setCurrentIndex(format_box.findData(self.parameters.format))
+        format_box.currentIndexChanged.connect(self.formatChanged)
+        self.format_box = format_box
+        layout.addWidget(format_box)
 
     def addWidthBox(self, layout):
         layout.addWidget(QtGui.QLabel('Width:'))
@@ -142,6 +213,11 @@ class ImagePreviewForm(PluginForm):
         self.parameters.height = newHeight
         self.draw()
 
+    def formatChanged(self, newFormatIndex):
+        self.parameters.format = \
+            self.format_box.itemData(self.format_box.currentIndex())
+        self.draw()
+
     def choose(self):
         address = AskAddr(self.parameters.address, 'Please enter an address')
         if address is not None:
@@ -154,19 +230,7 @@ class ImagePreviewForm(PluginForm):
             self.image_label.pixmap().save(path, 'PNG')
 
     def draw(self):
-        channels = 4
-        format = QtGui.QImage.Format_RGB888
-        byte_count = self.parameters.width * self.parameters.height * channels
-        bytes = MemoryReader.read(self.parameters.address, byte_count)
-        assert(bytes is not None)
-
-        pixmap = QtGui.QPixmap()
-        pixmap.convertFromImage(QtGui.QImage(
-            bytes,
-            self.parameters.width,
-            self.parameters.height,
-            format))
-
+        pixmap = Drawer(self.parameters).getPixmap()
         self.image_label.setPixmap(pixmap)
 
 class ImagePreviewPlugin(plugin_t):
