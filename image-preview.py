@@ -96,6 +96,7 @@ class DrawParameters(object):
         self.width = 800
         self.height = 600
         self.address = GetEntryPoint(1)
+        self.invert_alpha = False
 
 class Drawer(object):
     FORMAT_MAP = \
@@ -119,6 +120,9 @@ class Drawer(object):
             qt_format)
         if swap_rgb:
             image = image.rgbSwapped()
+        if self.parameters.invert_alpha:
+            image.invertPixels(QtGui.QImage.InvertRgba)
+            image.invertPixels(QtGui.QImage.InvertRgb)
         pixmap = QtGui.QPixmap()
         pixmap.convertFromImage(image)
         return pixmap
@@ -145,6 +149,7 @@ class ImagePreviewForm(PluginForm):
 
         toolbar = QtGui.QHBoxLayout()
         self.addFormatBox(toolbar)
+        self.addInvertAlphaCheckBox(toolbar)
         self.addWidthBox(toolbar)
         self.addHeightBox(toolbar)
         self.addAddressLabel(toolbar)
@@ -196,6 +201,12 @@ class ImagePreviewForm(PluginForm):
         self.format_box = format_box
         layout.addWidget(format_box)
 
+    def addInvertAlphaCheckBox(self, layout):
+        layout.addWidget(QtGui.QLabel('Invert alpha:'))
+        invert_checkbox = QtGui.QCheckBox()
+        invert_checkbox.stateChanged.connect(self.invertAlphaChanged)
+        layout.addWidget(invert_checkbox)
+
     def addWidthBox(self, layout):
         layout.addWidget(QtGui.QLabel('Width:'))
         width_box = QtGui.QSpinBox()
@@ -236,6 +247,10 @@ class ImagePreviewForm(PluginForm):
         redraw_button = QtGui.QPushButton('&Redraw')
         redraw_button.clicked.connect(self.redraw)
         layout.addWidget(redraw_button)
+
+    def invertAlphaChanged(self, value):
+        self.parameters.invert_alpha = value
+        self.draw()
 
     def widthChanged(self, newWidth):
         self.parameters.width = newWidth
