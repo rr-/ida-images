@@ -144,8 +144,9 @@ class ImagePreviewForm(PluginForm):
         self.addFormatBox(toolbar)
         self.addWidthBox(toolbar)
         self.addHeightBox(toolbar)
-        self.addGotoButton(toolbar)
         self.addAddressLabel(toolbar)
+        self.addGotoButton(toolbar)
+        self.addRedrawButton(toolbar)
         self.addSaveButton(toolbar)
         toolbar.addStretch()
 
@@ -213,6 +214,11 @@ class ImagePreviewForm(PluginForm):
         save_button.clicked.connect(self.save)
         layout.addWidget(save_button)
 
+    def addRedrawButton(self, layout):
+        redraw_button = QtGui.QPushButton('&Redraw')
+        redraw_button.clicked.connect(self.redraw)
+        layout.addWidget(redraw_button)
+
     def widthChanged(self, newWidth):
         self.parameters.width = newWidth
         self.draw()
@@ -231,6 +237,9 @@ class ImagePreviewForm(PluginForm):
         if address is not None:
             self.parameters.address = address
             self.draw()
+
+    def redraw(self):
+        self.draw()
 
     def save(self):
         path = AskFile(1, '*.png', 'Save the image as...')
