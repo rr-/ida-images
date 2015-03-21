@@ -150,6 +150,8 @@ class ImagePreviewForm(PluginForm):
         self.addSaveButton(toolbar)
         toolbar.addStretch()
 
+        self.addShortcuts()
+
         self.image_label = QtGui.QLabel()
         scroll_area = QtGui.QScrollArea()
         scroll_area.setWidget(self.image_label)
@@ -157,6 +159,25 @@ class ImagePreviewForm(PluginForm):
         layout.addLayout(toolbar)
         layout.addWidget(scroll_area)
         self.parent.setLayout(layout)
+
+    def addShortcuts(self):
+        QtGui.QShortcut(
+            QtGui.QKeySequence('G'),
+            self.parent,
+            self.changeAddress,
+            context=QtCore.Qt.ApplicationShortcut)
+
+        QtGui.QShortcut(
+            QtGui.QKeySequence('Ctrl+left'),
+            self.parent,
+            self.goLeft,
+            context=QtCore.Qt.ApplicationShortcut)
+
+        QtGui.QShortcut(
+            QtGui.QKeySequence('Ctrl+right'),
+            self.parent,
+            self.goRight,
+            context=QtCore.Qt.ApplicationShortcut)
 
     def addFormatBox(self, layout):
         layout.addWidget(QtGui.QLabel('Format:'))
@@ -193,14 +214,8 @@ class ImagePreviewForm(PluginForm):
     def addGotoButton(self, layout):
         goto_button = QtGui.QPushButton('&Go to address... [G]')
         goto_button.setDefault(True)
-        goto_button.clicked.connect(self.change_address)
+        goto_button.clicked.connect(self.changeAddress)
         layout.addWidget(goto_button)
-
-        QtGui.QShortcut(
-            QtGui.QKeySequence('G'),
-            self.parent,
-            self.change_address,
-            context=QtCore.Qt.ApplicationShortcut)
 
     def addAddressLabel(self, layout):
         address_label1 = QtGui.QLabel('Address:')
@@ -232,11 +247,21 @@ class ImagePreviewForm(PluginForm):
             self.format_box.itemData(self.format_box.currentIndex())
         self.draw()
 
-    def change_address(self):
+    def changeAddress(self):
         address = AskAddr(self.parameters.address, 'Please enter an address')
         if address is not None:
             self.parameters.address = address
             self.draw()
+
+    def goLeft(self):
+        self.parameters.address -= self.getShownByteCount()
+        self.parameters.address = max(self.parameters.address, MinEA())
+        self.draw()
+
+    def goRight(self):
+        self.parameters.address += self.getShownByteCount()
+        self.parameters.address = min(self.parameters.address, MaxEA())
+        self.draw()
 
     def redraw(self):
         self.draw()
@@ -250,6 +275,10 @@ class ImagePreviewForm(PluginForm):
         self.address_label.setText(atoa(self.parameters.address))
         pixmap = Drawer(self.parameters).getPixmap()
         self.image_label.setPixmap(pixmap)
+
+    def getShownByteCount(self):
+        bytes = Drawer.FORMAT_MAP[self.parameters.format][0]
+        return self.parameters.width * self.parameters.height * bytes
 
 class ImagePreviewPlugin(plugin_t):
     flags = 0
