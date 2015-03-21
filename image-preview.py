@@ -50,7 +50,10 @@ class MemoryReader(object):
             chunk = GetManyBytes(
                 intersection.start,
                 intersection.end - intersection.start)
-            assert(chunk is not None)
+            if chunk is None:
+                print 'Some bytes are unreadable in %s..%s' % (
+                    atoa(intersection.start), atoa(intersection.end))
+                continue
 
             result = \
                 result[0:intersection.start - address] \
