@@ -69,6 +69,7 @@ class MemoryReader(object):
             if range2.length > 0:
                 ranges_left.append(range2)
 
+        assert(len(result) == count)
         return result
 
 class PixelFormats(object):
@@ -112,12 +113,14 @@ class Drawer(object):
         self.parameters = parameters
 
     def getPixmap(self):
-        bytes, qt_format, swap_rgb = self.getBytes()
+        bytes, span, qt_format, swap_rgb = self.getBytes()
         image = QtGui.QImage(
             bytes,
             self.parameters.width,
             self.parameters.height,
+            self.parameters.width * span,
             qt_format)
+        assert(len(bytes) == image.byteCount())
         if swap_rgb:
             image = image.rgbSwapped()
         if self.parameters.invert_alpha:
@@ -135,7 +138,8 @@ class Drawer(object):
         byte_count = self.parameters.width * self.parameters.height * span
         bytes = MemoryReader.read(self.parameters.address, byte_count)
         assert(bytes is not None)
-        return bytes, qt_format, swap_rgb
+        assert(len(bytes) == byte_count)
+        return bytes, span, qt_format, swap_rgb
 
 class ImagePreviewForm(PluginForm):
     def OnCreate(self, form):
@@ -245,7 +249,7 @@ class ImagePreviewForm(PluginForm):
 
     def addRedrawButton(self, layout):
         redraw_button = QtGui.QPushButton('&Redraw')
-        redraw_button.clicked.connect(self.redraw)
+        redraw_button.clicked.connect(self.draw)
         layout.addWidget(redraw_button)
 
     def invertAlphaChanged(self, value):
@@ -279,9 +283,6 @@ class ImagePreviewForm(PluginForm):
     def goRight(self):
         self.parameters.address += self.getShownByteCount()
         self.parameters.address = min(self.parameters.address, MaxEA())
-        self.draw()
-
-    def redraw(self):
         self.draw()
 
     def save(self):
