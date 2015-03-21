@@ -247,7 +247,7 @@ class ImagePreviewForm(PluginForm):
             self.image_label.pixmap().save(path, 'PNG')
 
     def draw(self):
-        self.address_label.setText('0x%08x' % self.parameters.address)
+        self.address_label.setText(atoa(self.parameters.address))
         pixmap = Drawer(self.parameters).getPixmap()
         self.image_label.setPixmap(pixmap)
 
