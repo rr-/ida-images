@@ -190,10 +190,10 @@ class ImagePreviewForm(PluginForm):
         layout.addWidget(height_box)
 
     def addGotoButton(self, layout):
-        button_goto = QtGui.QPushButton('&Go to address... [G]')
-        button_goto.setDefault(True)
-        button_goto.clicked.connect(self.change_address)
-        layout.addWidget(button_goto)
+        goto_button = QtGui.QPushButton('&Go to address... [G]')
+        goto_button.setDefault(True)
+        goto_button.clicked.connect(self.change_address)
+        layout.addWidget(goto_button)
 
         QtGui.QShortcut(
             QtGui.QKeySequence('G'),
@@ -209,9 +209,9 @@ class ImagePreviewForm(PluginForm):
         self.address_label = address_label2
 
     def addSaveButton(self, layout):
-        button_save = QtGui.QPushButton('&Save...')
-        button_save.clicked.connect(self.save)
-        layout.addWidget(button_save)
+        save_button = QtGui.QPushButton('&Save...')
+        save_button.clicked.connect(self.save)
+        layout.addWidget(save_button)
 
     def widthChanged(self, newWidth):
         self.parameters.width = newWidth
