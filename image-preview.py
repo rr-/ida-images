@@ -145,6 +145,7 @@ class ImagePreviewForm(PluginForm):
         self.addWidthBox(toolbar)
         self.addHeightBox(toolbar)
         self.addGotoButton(toolbar)
+        self.addAddressLabel(toolbar)
         self.addSaveButton(toolbar)
         toolbar.addStretch()
 
@@ -191,14 +192,21 @@ class ImagePreviewForm(PluginForm):
     def addGotoButton(self, layout):
         button_goto = QtGui.QPushButton('&Go to address... [G]')
         button_goto.setDefault(True)
-        button_goto.clicked.connect(self.choose)
+        button_goto.clicked.connect(self.change_address)
         layout.addWidget(button_goto)
 
         QtGui.QShortcut(
             QtGui.QKeySequence('G'),
             self.parent,
-            self.choose,
+            self.change_address,
             context=QtCore.Qt.ApplicationShortcut)
+
+    def addAddressLabel(self, layout):
+        address_label1 = QtGui.QLabel('Address:')
+        address_label2 = QtGui.QLabel('...')
+        layout.addWidget(address_label1)
+        layout.addWidget(address_label2)
+        self.address_label = address_label2
 
     def addSaveButton(self, layout):
         button_save = QtGui.QPushButton('&Save...')
@@ -218,7 +226,7 @@ class ImagePreviewForm(PluginForm):
             self.format_box.itemData(self.format_box.currentIndex())
         self.draw()
 
-    def choose(self):
+    def change_address(self):
         address = AskAddr(self.parameters.address, 'Please enter an address')
         if address is not None:
             self.parameters.address = address
@@ -230,6 +238,7 @@ class ImagePreviewForm(PluginForm):
             self.image_label.pixmap().save(path, 'PNG')
 
     def draw(self):
+        self.address_label.setText('0x%08x' % self.parameters.address)
         pixmap = Drawer(self.parameters).getPixmap()
         self.image_label.setPixmap(pixmap)
 
