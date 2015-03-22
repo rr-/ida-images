@@ -73,22 +73,24 @@ class MemoryReader(object):
         return result
 
 class PixelFormats(object):
-    RGB888 = 'RGB (8-8-8)'
-    #RGB565 = 'RGB (5-6-5)'
-    #RGBA8888 = 'RGBA (8-8-8-8)'
+    RGB888    = 'RGB (8-8-8)'
+    RGB565    = 'RGB (5-6-5)'
+    RGBA8888  = 'RGBA (8-8-8-8)'
+    RGBA8888i = 'RGBA (8-8-8-8, invert alpha)'
+    RGBA8888x = 'RGBA (8-8-8-8, ignore alpha)'
+    RGBA5658  = 'RGBA (5-6-5-8)'
+    RGBA5658i = 'RGBA (5-6-5-8, invert alpha)'
     #RGBA4444 = 'RGBA (4-4-4-4)'
-    #RGBA5658 = 'RGBA (5-6-5-8)'
-    ARGB8888 = 'ARGB (8-8-8-8)'
-    #ARGB4444 = 'ARGB (4-4-4-4)'
-    #ARGB5658 = 'ARGB (5-6-5-8)'
-    BGR888 = 'BGR (8-8-8)'
-    #BGR565 = 'BGR (5-6-5)'
-    #BGRA8888 = 'BGRA (8-8-8-8)'
+    RGBA5658  = 'RGBA (5-6-5-8)'
+    BGR888    = 'BGR (8-8-8)'
+    BGR565    = 'BGR (5-6-5)'
+    BGRA8888  = 'BGRA (8-8-8-8)'
+    BGRA8888i = 'BGRA (8-8-8-8, invert alpha)'
+    BGRA8888x = 'BGRA (8-8-8-8, ignore alpha)'
+    BGRA5658  = 'BGRA (5-6-5-8)'
+    BGRA5658i = 'BGRA (5-6-5-8, invert alpha)'
     #BGRA4444 = 'BGRA (4-4-4-4)'
-    #BGRA5658 = 'BGRA (5-6-5-8)'
-    ABGR8888 = 'ABGR (8-8-8-8)'
-    #ABGR4444 = 'ABGR (4-4-4-4)'
-    #ABGR5658 = 'ABGR (5-6-5-8)'
+    BGRA5658  = 'BGRA (5-6-5-8)'
     GRAY8 = 'Grayscale (8)'
 
 class DrawParameters(object):
@@ -97,23 +99,42 @@ class DrawParameters(object):
         self.width = 800
         self.height = 600
         self.address = GetEntryPoint(1)
-        self.invert_alpha = False
 
 class Drawer(object):
     FORMAT_MAP = \
     {
-        PixelFormats.RGB888:   (3, QtGui.QImage.Format_RGB888, False),
-        PixelFormats.ARGB8888: (4, QtGui.QImage.Format_ARGB32, False),
-        PixelFormats.BGR888:   (3, QtGui.QImage.Format_RGB888, True),
-        PixelFormats.ABGR8888: (4, QtGui.QImage.Format_ARGB32, True),
-        PixelFormats.GRAY8:    (1, QtGui.QImage.Format_Indexed8, False),
+        PixelFormats.RGB888:    (3, QtGui.QImage.Format_RGB888,   True,  False),
+        PixelFormats.RGB565:    (2, QtGui.QImage.Format_RGB16,    True,  False),
+        PixelFormats.RGBA8888:  (4, QtGui.QImage.Format_ARGB32,   True,  False),
+        PixelFormats.RGBA8888i: (4, QtGui.QImage.Format_ARGB32,   True,  True),
+        PixelFormats.RGBA8888x: (4, QtGui.QImage.Format_RGB32,    True,  False),
+        PixelFormats.RGBA5658:  (3, QtGui.QImage.Format_RGB16,    True,  False),
+        PixelFormats.RGBA5658i: (3, QtGui.QImage.Format_RGB16,    True,  True),
+        PixelFormats.BGR888:    (3, QtGui.QImage.Format_RGB888,   False, False),
+        PixelFormats.BGR565:    (2, QtGui.QImage.Format_RGB16,    False, False),
+        PixelFormats.BGRA8888:  (4, QtGui.QImage.Format_ARGB32,   False, False),
+        PixelFormats.BGRA8888i: (4, QtGui.QImage.Format_ARGB32,   False, True),
+        PixelFormats.BGRA8888x: (4, QtGui.QImage.Format_RGB32,    False, False),
+        PixelFormats.BGRA5658:  (3, QtGui.QImage.Format_RGB16,    False, False),
+        PixelFormats.BGRA5658i: (3, QtGui.QImage.Format_RGB16,    False, True),
+        PixelFormats.GRAY8:     (1, QtGui.QImage.Format_Indexed8, False, False),
     }
 
     def __init__(self, parameters):
         self.parameters = parameters
 
     def getPixmap(self):
-        bytes, span, qt_format, swap_rgb = self.getBytes()
+        if self.parameters.format not in self.FORMAT_MAP:
+            raise RuntimeError('Not implemented')
+
+        span, qt_format, swap_rgb, invert_alpha = \
+            self.FORMAT_MAP[self.parameters.format]
+
+        byte_count = self.parameters.width * self.parameters.height * span
+        bytes = MemoryReader.read(self.parameters.address, byte_count)
+        assert(bytes is not None)
+        assert(len(bytes) == byte_count)
+
         image = QtGui.QImage(
             bytes,
             self.parameters.width,
@@ -121,25 +142,20 @@ class Drawer(object):
             self.parameters.width * span,
             qt_format)
         assert(len(bytes) == image.byteCount())
+
         if swap_rgb:
             image = image.rgbSwapped()
-        if self.parameters.invert_alpha:
+        if invert_alpha:
             image.invertPixels(QtGui.QImage.InvertRgba)
             image.invertPixels(QtGui.QImage.InvertRgb)
+
+        #creating pixmap crashes on RGB32?
+        if qt_format == QtGui.QImage.Format_RGB32:
+            image = image.convertToFormat(QtGui.QImage.Format_RGB888)
+
         pixmap = QtGui.QPixmap()
         pixmap.convertFromImage(image)
         return pixmap
-
-    def getBytes(self):
-        if self.parameters.format not in self.FORMAT_MAP:
-            raise RuntimeError('Not implemented')
-
-        span, qt_format, swap_rgb = self.FORMAT_MAP[self.parameters.format]
-        byte_count = self.parameters.width * self.parameters.height * span
-        bytes = MemoryReader.read(self.parameters.address, byte_count)
-        assert(bytes is not None)
-        assert(len(bytes) == byte_count)
-        return bytes, span, qt_format, swap_rgb
 
 class ImagePreviewForm(PluginForm):
     def OnCreate(self, form):
@@ -153,7 +169,6 @@ class ImagePreviewForm(PluginForm):
 
         toolbar = QtGui.QHBoxLayout()
         self.addFormatBox(toolbar)
-        self.addInvertAlphaCheckBox(toolbar)
         self.addWidthBox(toolbar)
         self.addHeightBox(toolbar)
         self.addAddressLabel(toolbar)
@@ -205,12 +220,6 @@ class ImagePreviewForm(PluginForm):
         self.format_box = format_box
         layout.addWidget(format_box)
 
-    def addInvertAlphaCheckBox(self, layout):
-        layout.addWidget(QtGui.QLabel('Invert alpha:'))
-        invert_checkbox = QtGui.QCheckBox()
-        invert_checkbox.stateChanged.connect(self.invertAlphaChanged)
-        layout.addWidget(invert_checkbox)
-
     def addWidthBox(self, layout):
         layout.addWidget(QtGui.QLabel('Width:'))
         width_box = QtGui.QSpinBox()
@@ -251,10 +260,6 @@ class ImagePreviewForm(PluginForm):
         redraw_button = QtGui.QPushButton('&Redraw')
         redraw_button.clicked.connect(self.draw)
         layout.addWidget(redraw_button)
-
-    def invertAlphaChanged(self, value):
-        self.parameters.invert_alpha = value
-        self.draw()
 
     def widthChanged(self, newWidth):
         self.parameters.width = newWidth
