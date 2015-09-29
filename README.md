@@ -9,12 +9,15 @@ afterwards.
 
 ## Features
 
+- CLI frontend for analyzing standalone files
 - Multiple pixel formats to choose from: RGB, BGR, alpha channels, etc.
 - Memory exploration made convenient with keyboard shortcuts:
     - <kbd>G</kbd> - go to address
     - <kbd>Ctrl</kbd>+<kbd>&larr;</kbd> - seek to previous memory chunk
     - <kbd>Ctrl</kbd>+<kbd>&rarr;</kbd> - seek to next memory chunk
 - Saving as PNG
+- Adjusting brightness (useful for searching for images using palettes)
+- Flipping vertically (useful for analyzing images using BMP-like layout)
 
 Additionally, I'm open to feature requests, as long as they won't make the code
 too bloated.
