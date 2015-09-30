@@ -1,0 +1,86 @@
+#!/bin/python3
+from PyQt4 import QtGui
+import librgb
+import argparse
+import os, sys
+
+
+class MainWindow(QtGui.QMainWindow):
+    def __init__(self, params):
+        super(MainWindow, self).__init__()
+
+        adapter = librgb.GenericWindowAdapter(params)
+        librgb.ShortcutManager(adapter).register(self)
+
+        layout = adapter.createLayout()
+        central_widget = QtGui.QWidget(self)
+        central_widget.setLayout(layout)
+        self.setCentralWidget(central_widget)
+        adapter.draw()
+
+def parse_args():
+    class CustomHelpFormatter(argparse.HelpFormatter):
+        def __init__(self, prog):
+            super().__init__(prog, max_help_position=40, width=80)
+
+        def _format_action_invocation(self, action):
+            if not action.option_strings:
+                return super()._format_action_invocation(action)
+            default = self._get_default_metavar_for_optional(action)
+            values = self._format_args(action, default)
+            opts = action.option_strings
+            short = [arg for arg in opts if not arg.startswith('--')]
+            long = [arg for arg in opts if arg.startswith('--')]
+            return '%*s%s%s %s' % (
+                3, ', '.join(short), ', ' if short else '  ', ', '.join(long),
+                values)
+
+    class HexAction(argparse.Action):
+        def __call__(self, parser, ns, values, option_string=None):
+            setattr(ns, self.dest, int(values, 16))
+
+    fmt = lambda prog: CustomHelpFormatter(prog)
+    parser = argparse.ArgumentParser(
+        description='Preview given file as raw pixels.', formatter_class=fmt)
+
+    parser.add_argument('file', metavar='FILE', help='file to view')
+    parser.add_argument(
+        '--flip', default=False, action='store_true',
+        help='flip the preview vertically')
+    parser.add_argument(
+        '--brightness', metavar='MULTIPLIER', default=50.0, type=float,
+        help='sets brightness adjustment')
+    parser.add_argument(
+        '-f', '--format', metavar='FORMAT',
+        choices=librgb.PixelFormats.get_short_names(), default='GRAY8',
+        help='set the pixel format of the preview')
+    parser.add_argument(
+        '--width', metavar='NUM', type=int, default=800,
+        help='set the preview width')
+    parser.add_argument(
+        '--height', metavar='NUM', type=int, default=600,
+        help='set the preview height')
+    parser.add_argument(
+        '-a', '--address', metavar='HEXNUM', action=HexAction, default=0,
+        help='set the position within the file to start preview at')
+
+    return parser.parse_args()
+
+def main():
+    args = parse_args()
+    params = librgb.RendererParams()
+    params.reader = librgb.FileReader(args.file)
+    params.format = librgb.PixelFormats.from_short_name(args.format)
+    params.width = args.width
+    params.height = args.height
+    params.address = args.address
+    params.flip = args.flip
+    params.brightness = args.brightness
+
+    app = QtGui.QApplication(sys.argv)
+    win = MainWindow(params)
+    win.show()
+    app.exec_()
+
+if __name__ == '__main__':
+    main()

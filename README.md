@@ -24,12 +24,11 @@ too bloated.
 
 ## Installation
 
-Either drop the `.py` file in `C:\Program Files (x86)\IDA 6.6\plugins` (or
-similar) and then run it via <kbd>Ctrl</kbd>+<kbd>3</kbd>, or run the script
-manually with <kbd>Alt</kbd>+<kbd>F9</kbd>.
-
-Note that if you plan on modifying the script, the first option requires you to
-restart Ida after making every change, while the second one doesn't.
+Either drop the `rgb-ida.py` file and `librgb` directory in `C:\Program Files
+(x86)\IDA 6.6\plugins` (or similar) and then run it via
+<kbd>Ctrl</kbd>+<kbd>3</kbd>, or run the script manually with
+<kbd>Alt</kbd>+<kbd>F9</kbd>. The other file, `./rgb`, is a CLI frontend that
+can be used outside Ida and analyzes files rather than process memory.
 
 ## Seeing it in action
 
