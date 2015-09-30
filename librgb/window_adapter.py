@@ -62,13 +62,13 @@ class GenericWindowAdapter(object):
     def add_size_boxes(self, layout):
         self.width_box = QtGui.QSpinBox()
         self.width_box.setMinimum(1)
-        self.width_box.setMaximum(2000)
+        self.width_box.setMaximum(4096)
         self.width_box.valueChanged.connect(self.width_changed)
         layout.addWidget(self.width_box)
         layout.addWidget(QtGui.QLabel('x'))
         self.height_box = QtGui.QSpinBox()
         self.height_box.setMinimum(1)
-        self.height_box.setMaximum(2000)
+        self.height_box.setMaximum(4096)
         self.height_box.valueChanged.connect(self.height_changed)
         layout.addWidget(self.height_box)
 
