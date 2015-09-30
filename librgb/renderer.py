@@ -59,10 +59,10 @@ class Renderer(object):
             data = output
 
         if params.brightness != 50.0:
-            #param   multiplier
-            #0       0 = 2^(-8)
-            #50      1 = 2^0
-            #100     256 = 2^8
+            # param   multiplier
+            # 0       0 = 2^(-8)
+            # 50      1 = 2^0
+            # 100     256 = 2^8
             multiplier = 2 ** ((params.brightness - 50) / (50 / 8))
             if has_numpy:
                 arr = numpy.fromstring(data, dtype=numpy.uint8)
@@ -91,7 +91,7 @@ class Renderer(object):
             image.invertPixels(QtGui.QImage.InvertRgba)
             image.invertPixels(QtGui.QImage.InvertRgb)
 
-        #creating pixmap crashes on RGB32?
+        # Creating pixmap crashes for RGB32?
         if qt_format == QtGui.QImage.Format_RGB32:
             image = image.convertToFormat(QtGui.QImage.Format_RGB888)
 

@@ -1,6 +1,6 @@
 from .reader import Reader
 
-#avoid complaints from __init__.py for CLI
+# Avoid complaints from __init__.py for CLI
 try:
     import idaapi
     import idc
@@ -30,14 +30,14 @@ class MemoryReader(Reader):
         valid_memory_ranges = []
         for i in range(segment_count):
             segment = idaapi.getnseg(i)
-            #skip segments with unstable data
+            # Skip segments with unstable data
             if segment.type == idaapi.SEG_XTRN:
                 continue
             valid_memory_ranges.append(
                 MemoryRange(segment.startEA, segment.endEA))
 
         while len(ranges_left) > 0:
-            #get a requested memory range and remove it from the list
+            # Get a requested memory range and remove it from the list
             current_range = ranges_left.pop()
 
             intersection = None
@@ -48,7 +48,7 @@ class MemoryReader(Reader):
                     intersection = MemoryRange(start, end)
                     break
 
-            #no segment can satisfy any part of requested range
+            # No segment can satisfy any part of requested range
             if intersection is None:
                 continue
 
@@ -67,7 +67,7 @@ class MemoryReader(Reader):
                 + result[intersection.end - address:]
             assert(len(result) == count)
 
-            #if necessary, enqueue ranges unsatisfied by chosen mem segment
+            # If necessary, enqueue ranges unsatisfied by chosen mem segment
             range1 = MemoryRange(current_range.start, intersection.start)
             range2 = MemoryRange(intersection.end, current_range.end)
             if range1.length > 0:
