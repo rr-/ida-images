@@ -17,24 +17,24 @@ afterwards.
 - Convenient keyboard shortcuts:
     - <kbd>G</kbd> - go to address (supports input such as `edi`)
     - <kbd>Q</kbd> - close
-    - <kbd>Ctrl+S</kbd> - save as&hellip;
-    - <kbd>Ctrl+F</kbd> - toggle vertical flip
+    - <kbd>Ctrl</kbd> + <kbd>S</kbd> - save as&hellip;
+    - <kbd>Ctrl</kbd> + <kbd>F</kbd> - toggle vertical flip
     - <kbd>H</kbd> - shrink size horizontally by 1 pixel
     - <kbd>J</kbd> - expand size vertically by 1 pixel
     - <kbd>K</kbd> - shrink size vertically by 1 pixel
     - <kbd>L</kbd> - expand size horizontally by 1 pixel
-    - <kbd>Shift</kbd>+<kbd>H</kbd> - shrink size horizontally by 25 pixels
-    - <kbd>Shift</kbd>+<kbd>J</kbd> - expand size vertically by 25 pixels
-    - <kbd>Shift</kbd>+<kbd>K</kbd> - shrink size vertically by 25 pixels
-    - <kbd>Shift</kbd>+<kbd>L</kbd> - expand size horizontally by 25 pixels
+    - <kbd>Shift</kbd> + <kbd>H</kbd> - shrink size horizontally by 25 pixels
+    - <kbd>Shift</kbd> + <kbd>J</kbd> - expand size vertically by 25 pixels
+    - <kbd>Shift</kbd> + <kbd>K</kbd> - shrink size vertically by 25 pixels
+    - <kbd>Shift</kbd> + <kbd>L</kbd> - expand size horizontally by 25 pixels
     - <kbd>&larr;</kbd> - go backward by one byte
     - <kbd>&rarr;</kbd> - go forward by one byte
-    - <kbd>Shift</kbd>+<kbd>&larr;</kbd> - go backward by 25 bytes
-    - <kbd>Shift</kbd>+<kbd>&rarr;</kbd> - go forward by 25 bytes
-    - <kbd>Ctrl</kbd>+<kbd>&larr;</kbd> - go backward by 1/10 a "page"
-    - <kbd>Ctrl</kbd>+<kbd>&rarr;</kbd> - go forward by 1/10 a "page"
-    - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&larr;</kbd> - go backward by one "page"
-    - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&rarr;</kbd> - go forward by one "page"
+    - <kbd>Shift</kbd> + <kbd>&larr;</kbd> - go backward by 25 bytes
+    - <kbd>Shift</kbd> + <kbd>&rarr;</kbd> - go forward by 25 bytes
+    - <kbd>Ctrl</kbd> + <kbd>&larr;</kbd> - go backward by 1/10 a "page"
+    - <kbd>Ctrl</kbd> + <kbd>&rarr;</kbd> - go forward by 1/10 a "page"
+    - <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>&larr;</kbd> - go backward by one "page"
+    - <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>&rarr;</kbd> - go forward by one "page"
 
 Additionally, I'm open to feature requests, as long as they won't make the code
 too bloated.
@@ -42,10 +42,10 @@ too bloated.
 ## Installation
 
 Either drop the `rgb-ida.py` file and `librgb` directory in `C:\Program Files
-(x86)\IDA 6.6\plugins` (or similar) and then run it via
-<kbd>Ctrl</kbd>+<kbd>3</kbd>, or run the script manually with
-<kbd>Alt</kbd>+<kbd>F9</kbd>. The other file, `./rgb`, is a CLI frontend that
-can be used outside Ida and analyzes files rather than process memory.
+(x86)\IDA 6.6\plugins` (or similar) and then run it via <kbd>Ctrl</kbd> +
+<kbd>3</kbd>, or run the script manually with <kbd>Alt</kbd> + <kbd>F9</kbd>.
+The other file, `./rgb`, is a CLI frontend that can be used outside Ida and
+analyzes files rather than process memory.
 
 ## Seeing it in action
 
