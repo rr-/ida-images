@@ -34,13 +34,18 @@ can be used outside Ida and analyzes files rather than process memory.
 
 #### Viewing program code
 
-![A piece of code](https://cloud.githubusercontent.com/assets/1045476/6769003/9be65a98-d088-11e4-8f89-2d6550f1cd37.png)
+![A piece of code](https://cloud.githubusercontent.com/assets/1045476/10188909/5caf5f88-6763-11e5-9398-eae1df05b941.png)
 
-I have no idea what the gradients are there for, but it's certainly interesting!
+I have no idea what the gradients are there for, but it's certainly
+interesting!
+
+![Are you LZSS?](https://cloud.githubusercontent.com/assets/1045476/10188952/9f488f36-6763-11e5-91cf-76fd63d47c0d.png)
+
+More mysterious data.
 
 #### Viewing actual bitmap
 
-![A bitmap](https://cloud.githubusercontent.com/assets/1045476/6769004/9dbc1812-d088-11e4-8444-4e269dcc3efd.png)
+![A bitmap](https://cloud.githubusercontent.com/assets/1045476/10188916/65e391be-6763-11e5-8388-967cde0c7c6e.png)
 
 Now all that's left is to localize the exact function that allocated this
 segment... and voilà.
