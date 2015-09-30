@@ -17,6 +17,7 @@ afterwards.
 - Convenient keyboard shortcuts:
     - <kbd>G</kbd> - go to address (supports input such as `edi`)
     - <kbd>Q</kbd> - close
+    - <kbd>Ctrl+S</kbd> - save as&hellip;
     - <kbd>Ctrl+F</kbd> - toggle vertical flip
     - <kbd>H</kbd> - shrink size horizontally by 1 pixel
     - <kbd>J</kbd> - expand size vertically by 1 pixel

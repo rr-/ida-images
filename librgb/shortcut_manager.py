@@ -13,6 +13,7 @@ class ShortcutManager(object):
         if hasattr(widget, 'close'):
             self._define(widget, 'Q', widget.close)
         self._define(widget, 'G', self.window_adapter.change_address)
+        self._define(widget, 'Ctrl+S', self.window_adapter.save)
         self._define(widget, 'H', self.resize_near_left)
         self._define(widget, 'J', self.resize_near_down)
         self._define(widget, 'K', self.resize_near_up)
