@@ -39,13 +39,16 @@ afterwards.
 Additionally, I'm open to feature requests, as long as they won't make the code
 too bloated.
 
-## Installation
+## Installing IDA plugin
 
 Either drop the `rgb-ida.py` file and `librgb` directory in `C:\Program Files
 (x86)\IDA 6.6\plugins` (or similar) and then run it via <kbd>Ctrl</kbd> +
 <kbd>3</kbd>, or run the script manually with <kbd>Alt</kbd> + <kbd>F9</kbd>.
-The other file, `./rgb`, is a CLI frontend that can be used outside Ida and
-analyzes files rather than process memory.
+
+## Installing CLI version
+
+In this case you can either directly use `./rgb`, or install it globally with
+`sudo python setup.py install`.
 
 ## Seeing it in action
 
