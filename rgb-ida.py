@@ -37,7 +37,7 @@ class ImagePreviewPlugin(idaapi.plugin_t):
                 shortcut_manager = librgb.ShortcutManager(adapter, self.params)
                 shortcut_manager.register(self.parent)
 
-                layout = adapter.createLayout()
+                layout = adapter.create_layout()
                 self.parent.setLayout(layout)
                 adapter.draw()
 

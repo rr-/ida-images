@@ -12,7 +12,7 @@ class MainWindow(QtGui.QMainWindow):
         adapter = librgb.GenericWindowAdapter(params)
         librgb.ShortcutManager(adapter, params).register(self)
 
-        layout = adapter.createLayout()
+        layout = adapter.create_layout()
         central_widget = QtGui.QWidget(self)
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)

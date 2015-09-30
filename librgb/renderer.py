@@ -35,7 +35,7 @@ class Renderer(object):
     def __init__(self, params):
         self.params = params
 
-    def getPixmap(self):
+    def get_pixmap(self):
         params = self.params
         reader = self.params.reader
 

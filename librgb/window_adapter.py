@@ -10,22 +10,22 @@ class GenericWindowAdapter(object):
     def __init__(self, params):
         self.params = params
 
-    def createLayout(self):
+    def create_layout(self):
         layout = QtGui.QVBoxLayout()
 
         upper_toolbar = QtGui.QHBoxLayout()
-        self.addFormatBox(upper_toolbar)
-        self.addSizeBoxes(upper_toolbar)
+        self.add_format_box(upper_toolbar)
+        self.add_size_boxes(upper_toolbar)
         upper_toolbar.addStretch()
-        self.addFlipCheckbox(upper_toolbar)
-        self.addBrightnessBox(upper_toolbar)
+        self.add_flip_checkbox(upper_toolbar)
+        self.add_brightness_box(upper_toolbar)
 
         lower_toolbar = QtGui.QHBoxLayout()
-        self.addAddressLabel(lower_toolbar)
+        self.add_address_label(lower_toolbar)
         lower_toolbar.addStretch()
-        self.addGotoButton(lower_toolbar)
-        self.addRedrawButton(lower_toolbar)
-        self.addSaveButton(lower_toolbar)
+        self.add_goto_button(lower_toolbar)
+        self.add_redraw_button(lower_toolbar)
+        self.add_save_button(lower_toolbar)
 
         self.image_label = QtGui.QLabel()
         self.image_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -38,82 +38,82 @@ class GenericWindowAdapter(object):
 
         return layout
 
-    def addFormatBox(self, layout):
+    def add_format_box(self, layout):
         self.format_box = QtGui.QComboBox()
         for text in PixelFormats.get_long_names():
             self.format_box.addItem(text, text)
-        self.format_box.currentIndexChanged.connect(self.formatChanged)
+        self.format_box.currentIndexChanged.connect(self.format_changed)
         layout.addWidget(self.format_box)
 
-    def addFlipCheckbox(self, layout):
+    def add_flip_checkbox(self, layout):
         self.flip_checkbox = QtGui.QCheckBox()
-        self.flip_checkbox.stateChanged.connect(self.flipChanged)
+        self.flip_checkbox.stateChanged.connect(self.flip_changed)
         self.flip_checkbox.setText('Flip vertically')
         layout.addWidget(self.flip_checkbox)
 
-    def addBrightnessBox(self, layout):
+    def add_brightness_box(self, layout):
         layout.addWidget(QtGui.QLabel('Brightness:'))
         self.brightness_box = QtGui.QDoubleSpinBox()
         self.brightness_box.setMinimum(0.0)
         self.brightness_box.setMaximum(100.0)
-        self.brightness_box.valueChanged.connect(self.brightnessChanged)
+        self.brightness_box.valueChanged.connect(self.brightness_changed)
         layout.addWidget(self.brightness_box)
 
-    def addSizeBoxes(self, layout):
+    def add_size_boxes(self, layout):
         self.width_box = QtGui.QSpinBox()
         self.width_box.setMinimum(1)
         self.width_box.setMaximum(2000)
-        self.width_box.valueChanged.connect(self.widthChanged)
+        self.width_box.valueChanged.connect(self.width_changed)
         layout.addWidget(self.width_box)
         layout.addWidget(QtGui.QLabel('x'))
         self.height_box = QtGui.QSpinBox()
         self.height_box.setMinimum(1)
         self.height_box.setMaximum(2000)
-        self.height_box.valueChanged.connect(self.heightChanged)
+        self.height_box.valueChanged.connect(self.height_changed)
         layout.addWidget(self.height_box)
 
-    def addGotoButton(self, layout):
+    def add_goto_button(self, layout):
         goto_button = QtGui.QPushButton('&Go to... [G]')
         goto_button.setDefault(True)
-        goto_button.clicked.connect(self.changeAddress)
+        goto_button.clicked.connect(self.change_address)
         layout.addWidget(goto_button)
 
-    def addAddressLabel(self, layout):
+    def add_address_label(self, layout):
         address_label1 = QtGui.QLabel('Address:')
         address_label2 = QtGui.QLabel('...')
         layout.addWidget(address_label1)
         layout.addWidget(address_label2)
         self.address_label = address_label2
 
-    def addSaveButton(self, layout):
+    def add_save_button(self, layout):
         save_button = QtGui.QPushButton('&Save...')
         save_button.clicked.connect(self.save)
         layout.addWidget(save_button)
 
-    def addRedrawButton(self, layout):
+    def add_redraw_button(self, layout):
         redraw_button = QtGui.QPushButton('&Redraw')
         redraw_button.clicked.connect(self.draw)
         layout.addWidget(redraw_button)
 
 
-    def flipChanged(self, state):
+    def flip_changed(self, state):
         self.params.flip = state == QtCore.Qt.Checked
 
-    def brightnessChanged(self, value):
+    def brightness_changed(self, value):
         self.params.brightness = value
 
-    def widthChanged(self, newWidth):
-        self.params.width = newWidth
+    def width_changed(self, value):
+        self.params.width = value
 
-    def heightChanged(self, newHeight):
-        self.params.height = newHeight
+    def height_changed(self, value):
+        self.params.height = value
 
-    def formatChanged(self, newFormatIndex):
+    def format_changed(self, index):
         self.params.format = \
             self.format_box.itemData(self.format_box.currentIndex())
 
 
-    def changeAddress(self):
+    def change_address(self):
         address = self.ask_address(self.params.address)
         if address is not None:
             self.params.address = address
@@ -136,7 +136,7 @@ class GenericWindowAdapter(object):
         self.format_box.setCurrentIndex(
             self.format_box.findData(self.params.format))
 
-        pixmap = Renderer(self.params).getPixmap()
+        pixmap = Renderer(self.params).get_pixmap()
         self.image_label.setPixmap(pixmap)
 
         self.params.draw_cb = self.draw
