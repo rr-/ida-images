@@ -147,7 +147,8 @@ class GenericWindowAdapter(object):
     def draw(self):
         self.params.draw_cb = None
 
-        self.address_label.setText('%08x' % self.params.address)
+        self.address_label.setText(
+            self.params.reader.translate_address(self.params.address))
         self.flip_checkbox.setCheckState(
             QtCore.Qt.Checked if self.params.flip else QtCore.Qt.Unchecked)
         self.brightness_box.setValue(self.params.brightness)

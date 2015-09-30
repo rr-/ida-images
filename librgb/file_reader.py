@@ -23,3 +23,5 @@ class FileReader(Reader):
     def max_address(self):
         return self._max_address
 
+    def translate_address(self, address):
+        return '%08x' % address

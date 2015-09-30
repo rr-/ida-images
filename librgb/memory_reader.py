@@ -86,4 +86,5 @@ class MemoryReader(Reader):
     def max_address(self):
         return idaapi.cvar.inf.maxEA
 
-
+    def translate_address(self, address):
+        return idc.atoa(address)
