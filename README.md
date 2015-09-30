@@ -11,13 +11,23 @@ afterwards.
 
 - CLI frontend for analyzing standalone files
 - Multiple pixel formats to choose from: RGB, BGR, alpha channels, etc.
-- Memory exploration made convenient with keyboard shortcuts:
-    - <kbd>G</kbd> - go to address
-    - <kbd>Ctrl</kbd>+<kbd>&larr;</kbd> - seek to previous memory chunk
-    - <kbd>Ctrl</kbd>+<kbd>&rarr;</kbd> - seek to next memory chunk
 - Saving as PNG
 - Adjusting brightness (useful for searching for images using palettes)
 - Flipping vertically (useful for analyzing images using BMP-like layout)
+- Convenient keyboard shortcuts:
+    - <kbd>G</kbd> - go to address (supports input such as `edi`)
+	- <kbd>H</kbd> - expand size horizontally
+	- <kbd>J</kbd> - expand size vertically
+	- <kbd>K</kbd> - shrink size vertically
+	- <kbd>L</kbd> - shrink size horizontally
+    - <kbd>Q</kbd> - close
+    - <kbd>Ctrl+F</kbd> - toggle vertical flip
+    - <kbd>Ctrl</kbd>+<kbd>&larr;</kbd> - go backward by one "page"
+    - <kbd>Ctrl</kbd>+<kbd>&rarr;</kbd> - go forward by one "page"
+    - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&larr;</kbd> - go backward by 1/10 a "page"
+    - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&rarr;</kbd> - go forward by 1/10 a "page"
+    - <kbd>Shift</kbd>+<kbd>&larr;</kbd> - go backward by one byte
+    - <kbd>Shift</kbd>+<kbd>&rarr;</kbd> - go forward by one byte
 
 Additionally, I'm open to feature requests, as long as they won't make the code
 too bloated.

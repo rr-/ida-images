@@ -118,27 +118,6 @@ class GenericWindowAdapter(object):
         if address is not None:
             self.params.address = address
 
-    def resizeLeft(self):
-        self.params.width -= 1
-
-    def resizeRight(self):
-        self.params.width += 1
-
-    def resizeUp(self):
-        self.params.height -= 1
-
-    def resizeDown(self):
-        self.params.height += 1
-
-    def flip(self):
-        self.params.flip = not self.params.flip
-
-    def goLeft(self):
-        self.params.address -= self.params.shown_bytes
-
-    def goRight(self):
-        self.params.address += self.params.shown_bytes
-
     def save(self):
         path = self.ask_file()
         if path is not None:
@@ -174,4 +153,3 @@ class GenericWindowAdapter(object):
     def ask_file(self):
         return QtGui.QFileDialog.getSaveFileName(
             None, 'Save the image as...', None, '*.png')
-

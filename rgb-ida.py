@@ -34,7 +34,8 @@ class ImagePreviewPlugin(idaapi.plugin_t):
                 self.parent = self.FormToPySideWidget(form)
 
                 adapter = IdaWindowAdapter(params)
-                librgb.ShortcutManager(adapter).register(self.parent)
+                shortcut_manager = librgb.ShortcutManager(adapter, self.params)
+                shortcut_manager.register(self.parent)
 
                 layout = adapter.createLayout()
                 self.parent.setLayout(layout)
