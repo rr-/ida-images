@@ -16,10 +16,10 @@ afterwards.
 - Flipping vertically (useful for analyzing images using BMP-like layout)
 - Convenient keyboard shortcuts:
     - <kbd>G</kbd> - go to address (supports input such as `edi`)
-	- <kbd>H</kbd> - expand size horizontally
+	- <kbd>H</kbd> - shrink size horizontally
 	- <kbd>J</kbd> - expand size vertically
 	- <kbd>K</kbd> - shrink size vertically
-	- <kbd>L</kbd> - shrink size horizontally
+	- <kbd>L</kbd> - expand size horizontally
     - <kbd>Q</kbd> - close
     - <kbd>Ctrl+F</kbd> - toggle vertical flip
     - <kbd>Ctrl</kbd>+<kbd>&larr;</kbd> - go backward by one "page"
