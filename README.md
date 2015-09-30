@@ -16,18 +16,24 @@ afterwards.
 - Flipping vertically (useful for analyzing images using BMP-like layout)
 - Convenient keyboard shortcuts:
     - <kbd>G</kbd> - go to address (supports input such as `edi`)
-	- <kbd>H</kbd> - shrink size horizontally
-	- <kbd>J</kbd> - expand size vertically
-	- <kbd>K</kbd> - shrink size vertically
-	- <kbd>L</kbd> - expand size horizontally
     - <kbd>Q</kbd> - close
     - <kbd>Ctrl+F</kbd> - toggle vertical flip
-    - <kbd>Ctrl</kbd>+<kbd>&larr;</kbd> - go backward by one "page"
-    - <kbd>Ctrl</kbd>+<kbd>&rarr;</kbd> - go forward by one "page"
-    - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&larr;</kbd> - go backward by 1/10 a "page"
-    - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&rarr;</kbd> - go forward by 1/10 a "page"
-    - <kbd>Shift</kbd>+<kbd>&larr;</kbd> - go backward by one byte
-    - <kbd>Shift</kbd>+<kbd>&rarr;</kbd> - go forward by one byte
+    - <kbd>H</kbd> - shrink size horizontally by 1 pixel
+    - <kbd>J</kbd> - expand size vertically by 1 pixel
+    - <kbd>K</kbd> - shrink size vertically by 1 pixel
+    - <kbd>L</kbd> - expand size horizontally by 1 pixel
+    - <kbd>Shift</kbd>+<kbd>H</kbd> - shrink size horizontally by 25 pixels
+    - <kbd>Shift</kbd>+<kbd>J</kbd> - expand size vertically by 25 pixels
+    - <kbd>Shift</kbd>+<kbd>K</kbd> - shrink size vertically by 25 pixels
+    - <kbd>Shift</kbd>+<kbd>L</kbd> - expand size horizontally by 25 pixels
+    - <kbd>&larr;</kbd> - go backward by one byte
+    - <kbd>&rarr;</kbd> - go forward by one byte
+    - <kbd>Shift</kbd>+<kbd>&larr;</kbd> - go backward by 25 bytes
+    - <kbd>Shift</kbd>+<kbd>&rarr;</kbd> - go forward by 25 bytes
+    - <kbd>Ctrl</kbd>+<kbd>&larr;</kbd> - go backward by 1/10 a "page"
+    - <kbd>Ctrl</kbd>+<kbd>&rarr;</kbd> - go forward by 1/10 a "page"
+    - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&larr;</kbd> - go backward by one "page"
+    - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&rarr;</kbd> - go forward by one "page"
 
 Additionally, I'm open to feature requests, as long as they won't make the code
 too bloated.
