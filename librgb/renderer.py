@@ -72,9 +72,9 @@ class Renderer(object):
                 arr = arr.astype(dtype=numpy.uint8)
                 data = arr.tobytes()
             else:
-                output = bytearray(len(data))
+                output = bytearray(data)
                 for i in range(len(data)):
-                    output[i] = int(output[i] * multiplier) & 0xFF
+                    output[i] = max(min(int(output[i] * multiplier), 0xFF), 0)
                 data = output
 
         image = QtGui.QImage(
