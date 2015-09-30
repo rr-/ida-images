@@ -9,7 +9,7 @@ afterwards.
 
 ## Features
 
-- CLI frontend for analyzing standalone files
+- Standalone frontend for analyzing plain files
 - Multiple pixel formats to choose from: RGB, BGR, alpha channels, etc.
 - Saving as PNG
 - Adjusting brightness (useful for searching for images using palettes)
@@ -45,7 +45,7 @@ Either drop the `rgb-ida.py` file and `librgb` directory in `C:\Program Files
 (x86)\IDA 6.6\plugins` (or similar) and then run it via <kbd>Ctrl</kbd> +
 <kbd>3</kbd>, or run the script manually with <kbd>Alt</kbd> + <kbd>F9</kbd>.
 
-## Installing CLI version
+## Installing standalone version
 
 In this case you can either directly use `./rgb`, or install it globally with
 `sudo python setup.py install`.
