@@ -38,6 +38,8 @@ class Renderer(object):
     def get_pixmap(self):
         params = self.params
         reader = self.params.reader
+        if reader is None:
+            return QtGui.QPixmap()
 
         if params.format not in self.FORMAT_MAP:
             raise NotImplementedError()
@@ -47,7 +49,7 @@ class Renderer(object):
 
         stride = params.width * channels
         data_size = params.height * stride
-        data = reader.get_padded_bytes(params.address, data_size)
+        data = reader.get_padded_bytes(data_size)
         assert data is not None
         assert len(data) == data_size
 

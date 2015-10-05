@@ -22,9 +22,12 @@ class MemoryRange(object):
 # Reads continuous memory chunk even if it spans accross multiple segments.
 # "Missing" bytes are filled with NULL byte.
 class MemoryReader(Reader):
-    def get_padded_bytes(self, address, count):
+    def __init__(self):
+        super(MemoryReader, self).__init__()
+
+    def get_padded_bytes(self, count):
         result = "\x00" * count
-        ranges_left = [MemoryRange(address, address + count)]
+        ranges_left = [MemoryRange(self.address, self.address + count)]
 
         segment_count = idaapi.get_segm_qty()
         valid_memory_ranges = []
@@ -62,9 +65,9 @@ class MemoryReader(Reader):
                 continue
 
             result = \
-                result[0:intersection.start - address] \
+                result[0:intersection.start - self.address] \
                 + chunk \
-                + result[intersection.end - address:]
+                + result[intersection.end - self.address:]
             assert(len(result) == count)
 
             # If necessary, enqueue ranges unsatisfied by chosen mem segment
@@ -86,5 +89,6 @@ class MemoryReader(Reader):
     def max_address(self):
         return idaapi.cvar.inf.maxEA
 
-    def translate_address(self, address):
-        return idc.atoa(address)
+    @property
+    def address_text(self):
+        return idc.atoa(self.address)

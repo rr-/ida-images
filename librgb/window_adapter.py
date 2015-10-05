@@ -114,9 +114,9 @@ class GenericWindowAdapter(object):
 
 
     def change_address(self):
-        address = self.ask_address(self.params.address)
+        address = self.ask_address(self.params.reader.address)
         if address is not None:
-            self.params.address = address
+            self.params.reader.address = address
 
     def save(self):
         path = self.ask_file()
@@ -126,8 +126,11 @@ class GenericWindowAdapter(object):
     def draw(self):
         self.params.draw_cb = None
 
-        self.address_label.setText(
-            self.params.reader.translate_address(self.params.address))
+        if self.params.reader is None:
+            self.address_label.setText('UNAVAILABLE')
+        else:
+            self.address_label.setText(
+                self.params.reader.address_text)
         self.flip_checkbox.setCheckState(
             QtCore.Qt.Checked if self.params.flip else QtCore.Qt.Unchecked)
         self.brightness_box.setValue(self.params.brightness)

@@ -41,11 +41,10 @@ class ImagePreviewPlugin(idaapi.plugin_t):
                 adapter.draw()
 
         params = librgb.RendererParams()
-        params.reader = librgb.MemoryReader()
+        params.readers = [librgb.MemoryReader()]
         params.format = librgb.PixelFormats.GRAY8
         params.width = 800
         params.height = 600
-        params.address = params.reader.min_address
         params.flip = False
         params.brightness = 50
         image_preview_form = MainWindow(params)

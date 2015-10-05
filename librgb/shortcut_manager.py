@@ -31,6 +31,8 @@ class ShortcutManager(object):
         self._define(widget, 'Ctrl+right', self.go_medium_right)
         self._define(widget, 'Ctrl+Shift+left', self.go_far_left)
         self._define(widget, 'Ctrl+Shift+right', self.go_far_right)
+        self._define(widget, '<', self.go_to_prev_file)
+        self._define(widget, '>', self.go_to_next_file)
 
     def _define(self, widget, shortcut, func):
         QtGui.QShortcut(QtGui.QKeySequence(shortcut), widget, lambda: func())
@@ -63,25 +65,39 @@ class ShortcutManager(object):
         self.params.flip = not self.params.flip
 
     def go_near_left(self):
-        self.params.address -= 1
+        self.params.reader.address -= 1
+        self.params.fire_redraw()
 
     def go_near_right(self):
-        self.params.address += 1
+        self.params.reader.address += 1
+        self.params.fire_redraw()
 
     def go_near_medium_left(self):
-        self.params.address -= 25
+        self.params.reader.address -= 25
+        self.params.fire_redraw()
 
     def go_near_medium_right(self):
-        self.params.address += 25
+        self.params.reader.address += 25
+        self.params.fire_redraw()
 
     def go_medium_left(self):
-        self.params.address -= self.params.shown_bytes // 10
+        self.params.reader.address -= self.params.shown_bytes // 10
+        self.params.fire_redraw()
 
     def go_medium_right(self):
-        self.params.address += self.params.shown_bytes // 10
+        self.params.reader.address += self.params.shown_bytes // 10
+        self.params.fire_redraw()
 
     def go_far_left(self):
-        self.params.address -= self.params.shown_bytes
+        self.params.reader.address -= self.params.shown_bytes
+        self.params.fire_redraw()
 
     def go_far_right(self):
-        self.params.address += self.params.shown_bytes
+        self.params.reader.address += self.params.shown_bytes
+        self.params.fire_redraw()
+
+    def go_to_prev_file(self):
+        self.params.use_prev_reader()
+
+    def go_to_next_file(self):
+        self.params.use_next_reader()

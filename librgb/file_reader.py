@@ -4,13 +4,15 @@ from .reader import Reader
 
 class FileReader(Reader):
     def __init__(self, source_path):
+        super(FileReader, self).__init__()
+        self.path = source_path
         self.source = open(source_path, 'rb')
         self.source.seek(0, os.SEEK_END)
         self._max_address = self.source.tell()
         self.source.seek(0, os.SEEK_SET)
 
-    def get_padded_bytes(self, address, size):
-        self.source.seek(address)
+    def get_padded_bytes(self, size):
+        self.source.seek(self.address)
         data = self.source.read(size)
         data += b'\x00' * (size - len(data))
         return data
@@ -23,5 +25,6 @@ class FileReader(Reader):
     def max_address(self):
         return self._max_address
 
-    def translate_address(self, address):
-        return '%08x' % address
+    @property
+    def address_text(self):
+        return '%s @ %08x' % (self.path, self.address)

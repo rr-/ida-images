@@ -3,6 +3,20 @@ from .renderer import Renderer
 
 class RendererParams(object):
     @property
+    def readers(self):
+        return self._readers
+
+    @readers.setter
+    def readers(self, v):
+        self._readers = v
+        if v:
+            self._reader_idx = 0
+            self.reader = v[self._reader_idx]
+        else:
+            self.reader = None
+            self._reader_idx = -1
+
+    @property
     def brightness(self):
         return self._brightness
 
@@ -26,24 +40,28 @@ class RendererParams(object):
     def height(self, v):
         self._height = max(1, v)
 
-    @property
-    def address(self):
-        return self._address
-
-    @address.setter
-    def address(self, v):
-        self._address = (
-            max(self.reader.min_address, min(self.reader.max_address, v)))
-
     def __setattr__(self, k, v):
         old_v = getattr(self, k) if hasattr(self, k) else None
         super(RendererParams, self).__setattr__(k, v)
         if k.startswith('_') or k == 'draw_cb' or old_v == v:
             return
-        if hasattr(self, 'draw_cb') and self.draw_cb:
-            self.draw_cb()
+        self.fire_redraw()
 
     @property
     def shown_bytes(self):
         bytes = Renderer.FORMAT_MAP[self.format][0]
         return self.width * self.height * bytes
+
+    def fire_redraw(self):
+        if hasattr(self, 'draw_cb') and self.draw_cb:
+            self.draw_cb()
+
+    def use_prev_reader(self):
+        if self._reader_idx > 0:
+            self._reader_idx -= 1
+            self.reader = self.readers[self._reader_idx]
+
+    def use_next_reader(self):
+        if self._reader_idx + 1 < len(self.readers):
+            self._reader_idx += 1
+            self.reader = self.readers[self._reader_idx]
