@@ -19,5 +19,4 @@ class Reader(object):
 
     @address.setter
     def address(self, v):
-        self._address = (
-            max(self.min_address, min(self.max_address, v)))
+        self._address = max(self.min_address, min(self.max_address, v))

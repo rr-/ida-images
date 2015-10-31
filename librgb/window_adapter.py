@@ -117,6 +117,7 @@ class GenericWindowAdapter(object):
         address = self.ask_address(self.params.reader.address)
         if address is not None:
             self.params.reader.address = address
+            self.params.fire_redraw()
 
     def save(self):
         path = self.ask_file()
