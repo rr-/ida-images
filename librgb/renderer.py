@@ -17,12 +17,14 @@ class Renderer(object):
     {
         PixelFormats.GRAY8:     (1, QtGui.QImage.Format_Indexed8, False, False),
 
+        PixelFormats.RGB555:    (2, QtGui.QImage.Format_RGB555,   True,  False),
         PixelFormats.RGB565:    (2, QtGui.QImage.Format_RGB16,    True,  False),
         PixelFormats.RGB888:    (3, QtGui.QImage.Format_RGB888,   True,  False),
         PixelFormats.RGBA8888:  (4, QtGui.QImage.Format_ARGB32,   True,  False),
         PixelFormats.RGBA8888i: (4, QtGui.QImage.Format_ARGB32,   True,  True),
         PixelFormats.RGBA8888x: (4, QtGui.QImage.Format_RGB32,    True,  False),
 
+        PixelFormats.BGR555:    (2, QtGui.QImage.Format_RGB555,   False, False),
         PixelFormats.BGR565:    (2, QtGui.QImage.Format_RGB16,    False, False),
         PixelFormats.BGR888:    (3, QtGui.QImage.Format_RGB888,   False, False),
         PixelFormats.BGRA8888:  (4, QtGui.QImage.Format_ARGB32,   False, False),
