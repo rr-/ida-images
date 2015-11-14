@@ -53,7 +53,7 @@ def parse_args():
         help='sets brightness adjustment')
     parser.add_argument(
         '-f', '--format', metavar='FORMAT',
-        choices=librgb.PixelFormats.get_short_names(), default='GRAY8',
+        choices=librgb.PixelFormats.get_short_names().values(), default='G8',
         help='set the pixel format of the preview')
     parser.add_argument(
         '--width', metavar='NUM', type=int, default=800,

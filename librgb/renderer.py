@@ -15,17 +15,19 @@ except ImportError:
 class Renderer(object):
     FORMAT_MAP = \
     {
-        PixelFormats.RGB888:    (3, QtGui.QImage.Format_RGB888,   True,  False),
+        PixelFormats.GRAY8:     (1, QtGui.QImage.Format_Indexed8, False, False),
+
         PixelFormats.RGB565:    (2, QtGui.QImage.Format_RGB16,    True,  False),
+        PixelFormats.RGB888:    (3, QtGui.QImage.Format_RGB888,   True,  False),
         PixelFormats.RGBA8888:  (4, QtGui.QImage.Format_ARGB32,   True,  False),
         PixelFormats.RGBA8888i: (4, QtGui.QImage.Format_ARGB32,   True,  True),
         PixelFormats.RGBA8888x: (4, QtGui.QImage.Format_RGB32,    True,  False),
-        PixelFormats.BGR888:    (3, QtGui.QImage.Format_RGB888,   False, False),
+
         PixelFormats.BGR565:    (2, QtGui.QImage.Format_RGB16,    False, False),
+        PixelFormats.BGR888:    (3, QtGui.QImage.Format_RGB888,   False, False),
         PixelFormats.BGRA8888:  (4, QtGui.QImage.Format_ARGB32,   False, False),
         PixelFormats.BGRA8888i: (4, QtGui.QImage.Format_ARGB32,   False, True),
         PixelFormats.BGRA8888x: (4, QtGui.QImage.Format_RGB32,    False, False),
-        PixelFormats.GRAY8:     (1, QtGui.QImage.Format_Indexed8, False, False),
     }
 
     def __init__(self, params):

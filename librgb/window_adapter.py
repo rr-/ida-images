@@ -40,8 +40,8 @@ class GenericWindowAdapter(object):
 
     def add_format_box(self, layout):
         self.format_box = QtGui.QComboBox()
-        for text in PixelFormats.get_long_names():
-            self.format_box.addItem(text, text)
+        for key, text in PixelFormats.get_long_names().items():
+            self.format_box.addItem(text, key)
         self.format_box.currentIndexChanged.connect(self.format_changed)
         layout.addWidget(self.format_box)
 
