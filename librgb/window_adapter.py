@@ -1,5 +1,5 @@
-from .pixel_formats import PixelFormats
-from .renderer import Renderer
+from librgb import pixel_formats
+from librgb.renderer import Renderer
 try:
     from PySide import QtCore, QtGui
 except ImportError:
@@ -40,7 +40,7 @@ class GenericWindowAdapter(object):
 
     def add_format_box(self, layout):
         self.format_box = QtGui.QComboBox()
-        for key, text in PixelFormats.get_long_names().items():
+        for key, text in pixel_formats.get_long_names().items():
             self.format_box.addItem(text, key)
         self.format_box.currentIndexChanged.connect(self.format_changed)
         layout.addWidget(self.format_box)

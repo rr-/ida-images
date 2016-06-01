@@ -1,4 +1,4 @@
-from .renderer import Renderer
+from librgb.renderer import Renderer
 
 
 class RendererParams(object):

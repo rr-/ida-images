@@ -1,5 +1,5 @@
 import os
-from .reader import Reader
+from librgb.reader import Reader
 
 
 class FileReader(Reader):

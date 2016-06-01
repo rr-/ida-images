@@ -1,4 +1,4 @@
-from .reader import Reader
+from librgb.reader import Reader
 
 # Avoid complaints from __init__.py for CLI
 try:

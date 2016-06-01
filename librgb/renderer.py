@@ -1,4 +1,4 @@
-from .pixel_formats import PixelFormats
+from librgb.pixel_formats import PixelFormats
 try:
     from PySide import QtCore, QtGui
 except ImportError:
