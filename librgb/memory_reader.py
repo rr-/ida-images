@@ -68,7 +68,7 @@ class MemoryReader(Reader):
                 result[0:intersection.start - self.address] \
                 + chunk \
                 + result[intersection.end - self.address:]
-            assert(len(result) == count)
+            assert len(result) == count
 
             # If necessary, enqueue ranges unsatisfied by chosen mem segment
             range1 = MemoryRange(current_range.start, intersection.start)
@@ -78,7 +78,7 @@ class MemoryReader(Reader):
             if range2.length > 0:
                 ranges_left.append(range2)
 
-        assert(len(result) == count)
+        assert len(result) == count
         return result
 
     @property

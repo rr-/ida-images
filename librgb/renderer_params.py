@@ -2,16 +2,24 @@ from librgb.renderer import Renderer
 
 
 class RendererParams(object):
+    def __init__(self):
+        self._width = 800
+        self._height = 600
+        self._brightness = 50
+        self._readers = []
+        self._reader_idx = None
+        self.reader = None
+
     @property
     def readers(self):
         return self._readers
 
     @readers.setter
-    def readers(self, v):
-        self._readers = v
-        if v:
+    def readers(self, value):
+        self._readers = value
+        if value:
             self._reader_idx = 0
-            self.reader = v[self._reader_idx]
+            self.reader = value[self._reader_idx]
         else:
             self.reader = None
             self._reader_idx = -1
@@ -21,36 +29,36 @@ class RendererParams(object):
         return self._brightness
 
     @brightness.setter
-    def brightness(self, v):
-        self._brightness = min(100, max(0, v))
+    def brightness(self, value):
+        self._brightness = min(100, max(0, value))
 
     @property
     def width(self):
         return self._width
 
     @width.setter
-    def width(self, v):
-        self._width = max(1, v)
+    def width(self, value):
+        self._width = max(1, value)
 
     @property
     def height(self):
         return self._height
 
     @height.setter
-    def height(self, v):
-        self._height = max(1, v)
+    def height(self, value):
+        self._height = max(1, value)
 
-    def __setattr__(self, k, v):
-        old_v = getattr(self, k) if hasattr(self, k) else None
-        super(RendererParams, self).__setattr__(k, v)
-        if k.startswith('_') or k == 'draw_cb' or old_v == v:
+    def __setattr__(self, key, value):
+        old_value = getattr(self, key) if hasattr(self, key) else None
+        super(RendererParams, self).__setattr__(key, value)
+        if key.startswith('_') or key == 'draw_cb' or old_value == value:
             return
         self.fire_redraw()
 
     @property
     def shown_bytes(self):
-        bytes = Renderer.FORMAT_MAP[self.format][0]
-        return self.width * self.height * bytes
+        channels = Renderer.FORMAT_MAP[self.format][0]
+        return self.width * self.height * channels
 
     def fire_redraw(self):
         if hasattr(self, 'draw_cb') and self.draw_cb:

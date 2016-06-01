@@ -1,35 +1,35 @@
-from librgb.pixel_formats import PixelFormats
 try:
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
 except ImportError:
-    from PyQt4 import QtCore, QtGui
+    from PyQt4 import QtGui
+from librgb.pixel_formats import PixelFormats
 
 try:
     import numpy
-    has_numpy = True
+    HAS_NUMPY = True
 except ImportError:
     print('[librgb] Brightness adjustment will be slow without numpy')
-    has_numpy = False
+    HAS_NUMPY = False
 
 
 class Renderer(object):
     FORMAT_MAP = \
     {
-        PixelFormats.GRAY8:     (1, QtGui.QImage.Format_Indexed8, False, False),
+        PixelFormats.GRAY8: (1, QtGui.QImage.Format_Indexed8, False, False),
 
-        PixelFormats.RGB555:    (2, QtGui.QImage.Format_RGB555,   True,  False),
-        PixelFormats.RGB565:    (2, QtGui.QImage.Format_RGB16,    True,  False),
-        PixelFormats.RGB888:    (3, QtGui.QImage.Format_RGB888,   True,  False),
-        PixelFormats.RGBA8888:  (4, QtGui.QImage.Format_ARGB32,   True,  False),
-        PixelFormats.RGBA8888i: (4, QtGui.QImage.Format_ARGB32,   True,  True),
-        PixelFormats.RGBA8888x: (4, QtGui.QImage.Format_RGB32,    True,  False),
+        PixelFormats.RGB555: (2, QtGui.QImage.Format_RGB555, True, False),
+        PixelFormats.RGB565: (2, QtGui.QImage.Format_RGB16, True, False),
+        PixelFormats.RGB888: (3, QtGui.QImage.Format_RGB888, True, False),
+        PixelFormats.RGBA8888: (4, QtGui.QImage.Format_ARGB32, True, False),
+        PixelFormats.RGBA8888i: (4, QtGui.QImage.Format_ARGB32, True, True),
+        PixelFormats.RGBA8888x: (4, QtGui.QImage.Format_RGB32, True, False),
 
-        PixelFormats.BGR555:    (2, QtGui.QImage.Format_RGB555,   False, False),
-        PixelFormats.BGR565:    (2, QtGui.QImage.Format_RGB16,    False, False),
-        PixelFormats.BGR888:    (3, QtGui.QImage.Format_RGB888,   False, False),
-        PixelFormats.BGRA8888:  (4, QtGui.QImage.Format_ARGB32,   False, False),
-        PixelFormats.BGRA8888i: (4, QtGui.QImage.Format_ARGB32,   False, True),
-        PixelFormats.BGRA8888x: (4, QtGui.QImage.Format_RGB32,    False, False),
+        PixelFormats.BGR555: (2, QtGui.QImage.Format_RGB555, False, False),
+        PixelFormats.BGR565: (2, QtGui.QImage.Format_RGB16, False, False),
+        PixelFormats.BGR888: (3, QtGui.QImage.Format_RGB888, False, False),
+        PixelFormats.BGRA8888: (4, QtGui.QImage.Format_ARGB32, False, False),
+        PixelFormats.BGRA8888i: (4, QtGui.QImage.Format_ARGB32, False, True),
+        PixelFormats.BGRA8888x: (4, QtGui.QImage.Format_RGB32, False, False),
     }
 
     def __init__(self, params):
@@ -66,7 +66,7 @@ class Renderer(object):
             # 50      1 = 2^0
             # 100     256 = 2^8
             multiplier = 2 ** ((params.brightness - 50) / (50 / 8))
-            if has_numpy:
+            if HAS_NUMPY:
                 arr = numpy.fromstring(data, dtype=numpy.uint8)
                 arr = arr.astype(dtype=numpy.float)
                 arr *= multiplier

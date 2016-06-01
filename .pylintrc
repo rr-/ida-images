@@ -1,0 +1,14 @@
+[basic]
+#function-rgx=^_?[a-z_][a-z0-9_]{2,}$|^test_
+#method-rgx=^[a-z_][a-z0-9_]{2,}$|^test_
+good-names=i,x,y,y2,ex
+
+[variables]
+dummy-variables-rgx=_|dummy
+
+[format]
+max-line-length=90
+
+[messages control]
+disable=missing-docstring,no-self-use,no-member,too-few-public-methods
+reports=no

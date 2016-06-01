@@ -1,14 +1,24 @@
-from librgb import pixel_formats
-from librgb.renderer import Renderer
 try:
     from PySide import QtCore, QtGui
 except ImportError:
     from PyQt4 import QtCore, QtGui
+from librgb import pixel_formats
+from librgb.renderer import Renderer
 
 
 class GenericWindowAdapter(object):
     def __init__(self, params):
         self.params = params
+        self.upper_toolbar = None
+        self.lower_toolbar = None
+        self.scroll_are = None
+        self.format_box = None
+        self.brightness_box = None
+        self.width_box = None
+        self.height_box = None
+        self.address_label = None
+        self.image_label = None
+        self.flip_checkbox = None
 
     def create_layout(self):
         layout = QtGui.QVBoxLayout()
@@ -108,7 +118,7 @@ class GenericWindowAdapter(object):
     def height_changed(self, value):
         self.params.height = value
 
-    def format_changed(self, index):
+    def format_changed(self, _index):
         self.params.format = \
             self.format_box.itemData(self.format_box.currentIndex())
 
@@ -146,11 +156,12 @@ class GenericWindowAdapter(object):
         self.params.draw_cb = self.draw
 
     def ask_address(self, address):
-        text, ok = QtGui.QInputDialog.getText(
+        text, confirmed = QtGui.QInputDialog.getText(
             None,
             'Input Dialog',
-            'Please enter an hexadecimal address:')
-        if ok:
+            'Please enter an hexadecimal address:',
+            text='%X' % address)
+        if confirmed:
             return int(text, 16)
         return None
 
