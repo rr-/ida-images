@@ -6,16 +6,17 @@ class FileReader(Reader):
     def __init__(self, source_path):
         super(FileReader, self).__init__()
         self.path = source_path
-        self.source = open(source_path, 'rb')
-        self.source.seek(0, os.SEEK_END)
-        self._max_address = self.source.tell()
-        self.source.seek(0, os.SEEK_SET)
+        with open(source_path, 'rb') as handle:
+            handle.seek(0, os.SEEK_END)
+            self._max_address = handle.tell()
+            handle.seek(0, os.SEEK_SET)
 
     def get_padded_bytes(self, size):
-        self.source.seek(self.address)
-        data = self.source.read(size)
-        data += b'\x00' * (size - len(data))
-        return data
+        with open(self.path, 'rb') as handle:
+            handle.seek(self.address)
+            data = handle.read(size)
+            data += b'\x00' * (size - len(data))
+            return data
 
     @property
     def min_address(self):
