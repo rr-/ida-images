@@ -13,8 +13,7 @@ except ImportError:
 
 
 class Renderer(object):
-    FORMAT_MAP = \
-    {
+    FORMAT_MAP = {
         PixelFormats.GRAY8: (1, QtGui.QImage.Format_Indexed8, False, False),
 
         PixelFormats.RGB555: (2, QtGui.QImage.Format_RGB555, True, False),

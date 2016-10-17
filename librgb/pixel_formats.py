@@ -18,6 +18,7 @@ class PixelFormats(object):
     RGBA8888i = 231
     RGBA8888x = 232
 
+
 NAME_MAP = [
     (PixelFormats.GRAY8, '8:Grayscale (8)', 'G8'),
 
@@ -36,17 +37,21 @@ NAME_MAP = [
     (PixelFormats.RGBA8888x, '32:RGBx (8-8-8-8)', 'RGBx8888'),
 ]
 
+
 def get_short_names():
     return OrderedDict([(item[0], item[2]) for item in NAME_MAP])
 
+
 def get_long_names():
     return OrderedDict([(item[0], item[1]) for item in NAME_MAP])
+
 
 def from_short_name(fmt):
     for key, item in PixelFormats.get_short_names().items():
         if item == fmt:
             return key
     raise RuntimeError('Unknown pixel format: ' + fmt)
+
 
 PixelFormats.get_short_names = get_short_names
 PixelFormats.get_long_names = get_long_names

@@ -1,4 +1,3 @@
-from PySide import QtCore, QtGui
 import idaapi
 import librgb
 
@@ -50,8 +49,10 @@ class ImagePreviewPlugin(idaapi.plugin_t):
         image_preview_form = MainWindow(params)
         image_preview_form.Show('Image preview')
 
+
 def PLUGIN_ENTRY():
     return ImagePreviewPlugin()
+
 
 if __name__ == '__main__':
     ImagePreviewPlugin().run(0)

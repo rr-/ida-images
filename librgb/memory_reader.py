@@ -19,6 +19,7 @@ class MemoryRange(object):
     def __str__(self):
         return 'start: %08x end: %08x' % (self.start, self.end)
 
+
 # Reads continuous memory chunk even if it spans accross multiple segments.
 # "Missing" bytes are filled with NULL byte.
 class MemoryReader(Reader):

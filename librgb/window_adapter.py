@@ -105,7 +105,6 @@ class GenericWindowAdapter(object):
         redraw_button.clicked.connect(self.draw)
         layout.addWidget(redraw_button)
 
-
     def flip_changed(self, state):
         self.params.flip = state == QtCore.Qt.Checked
 
@@ -121,7 +120,6 @@ class GenericWindowAdapter(object):
     def format_changed(self, _index):
         self.params.format = \
             self.format_box.itemData(self.format_box.currentIndex())
-
 
     def change_address(self):
         address = self.ask_address(self.params.reader.address)
