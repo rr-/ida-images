@@ -1,3 +1,5 @@
+# pylint: disable=unused-import
+
 try:
     from PyQt5 import QtCore
     from PyQt5 import QtGui

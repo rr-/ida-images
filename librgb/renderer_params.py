@@ -57,8 +57,7 @@ class RendererParams(object):
 
     @property
     def shown_bytes(self):
-        channels = Renderer.FORMAT_MAP[self.format][0]
-        return self.width * self.height * channels
+        return self.width * self.height * Renderer.get_byte_count(self.format)
 
     def fire_redraw(self):
         if hasattr(self, 'draw_cb') and self.draw_cb:

@@ -9,27 +9,32 @@ except ImportError:
     HAS_NUMPY = False
 
 
+_FORMAT_MAP = {
+    PixelFormats.GRAY8: (1, QtGui.QImage.Format_Indexed8, False, False),
+
+    PixelFormats.RGB555: (2, QtGui.QImage.Format_RGB555, True, False),
+    PixelFormats.RGB565: (2, QtGui.QImage.Format_RGB16, True, False),
+    PixelFormats.RGB888: (3, QtGui.QImage.Format_RGB888, True, False),
+    PixelFormats.RGBA8888: (4, QtGui.QImage.Format_ARGB32, True, False),
+    PixelFormats.RGBA8888i: (4, QtGui.QImage.Format_ARGB32, True, True),
+    PixelFormats.RGBA8888x: (4, QtGui.QImage.Format_RGB32, True, False),
+
+    PixelFormats.BGR555: (2, QtGui.QImage.Format_RGB555, False, False),
+    PixelFormats.BGR565: (2, QtGui.QImage.Format_RGB16, False, False),
+    PixelFormats.BGR888: (3, QtGui.QImage.Format_RGB888, False, False),
+    PixelFormats.BGRA8888: (4, QtGui.QImage.Format_ARGB32, False, False),
+    PixelFormats.BGRA8888i: (4, QtGui.QImage.Format_ARGB32, False, True),
+    PixelFormats.BGRA8888x: (4, QtGui.QImage.Format_RGB32, False, False),
+}
+
+
 class Renderer(object):
-    FORMAT_MAP = {
-        PixelFormats.GRAY8: (1, QtGui.QImage.Format_Indexed8, False, False),
-
-        PixelFormats.RGB555: (2, QtGui.QImage.Format_RGB555, True, False),
-        PixelFormats.RGB565: (2, QtGui.QImage.Format_RGB16, True, False),
-        PixelFormats.RGB888: (3, QtGui.QImage.Format_RGB888, True, False),
-        PixelFormats.RGBA8888: (4, QtGui.QImage.Format_ARGB32, True, False),
-        PixelFormats.RGBA8888i: (4, QtGui.QImage.Format_ARGB32, True, True),
-        PixelFormats.RGBA8888x: (4, QtGui.QImage.Format_RGB32, True, False),
-
-        PixelFormats.BGR555: (2, QtGui.QImage.Format_RGB555, False, False),
-        PixelFormats.BGR565: (2, QtGui.QImage.Format_RGB16, False, False),
-        PixelFormats.BGR888: (3, QtGui.QImage.Format_RGB888, False, False),
-        PixelFormats.BGRA8888: (4, QtGui.QImage.Format_ARGB32, False, False),
-        PixelFormats.BGRA8888i: (4, QtGui.QImage.Format_ARGB32, False, True),
-        PixelFormats.BGRA8888x: (4, QtGui.QImage.Format_RGB32, False, False),
-    }
-
     def __init__(self, params):
         self.params = params
+
+    @staticmethod
+    def get_byte_count(pixel_format):
+        return _FORMAT_MAP[pixel_format][0]
 
     def get_pixmap(self):
         params = self.params
@@ -37,11 +42,11 @@ class Renderer(object):
         if reader is None:
             return QtGui.QPixmap()
 
-        if params.format not in self.FORMAT_MAP:
+        if params.format not in _FORMAT_MAP:
             raise NotImplementedError()
 
         channels, qt_format, swap_rgb, invert_alpha = \
-            self.FORMAT_MAP[params.format]
+            _FORMAT_MAP[params.format]
 
         stride = params.width * channels
         data_size = params.height * stride

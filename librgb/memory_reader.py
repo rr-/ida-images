@@ -26,9 +26,9 @@ class MemoryReader(Reader):
     def __init__(self):
         super(MemoryReader, self).__init__()
 
-    def get_padded_bytes(self, count):
-        result = "\x00" * count
-        ranges_left = [MemoryRange(self.address, self.address + count)]
+    def get_padded_bytes(self, size):
+        result = "\x00" * size
+        ranges_left = [MemoryRange(self.address, self.address + size)]
 
         segment_count = idaapi.get_segm_qty()
         valid_memory_ranges = []
@@ -69,7 +69,7 @@ class MemoryReader(Reader):
                 result[0:intersection.start - self.address] \
                 + chunk \
                 + result[intersection.end - self.address:]
-            assert len(result) == count
+            assert len(result) == size
 
             # If necessary, enqueue ranges unsatisfied by chosen mem segment
             range1 = MemoryRange(current_range.start, intersection.start)
@@ -79,7 +79,7 @@ class MemoryReader(Reader):
             if range2.length > 0:
                 ranges_left.append(range2)
 
-        assert len(result) == count
+        assert len(result) == size
         return result
 
     @property

@@ -19,7 +19,7 @@ class DockableShim(object):
         # IDA 7+ Widgets
         if USING_IDA7API:
             import sip
-            self._form   = idaapi.create_empty_widget(self._title)
+            self._form = idaapi.create_empty_widget(self._title)
             self.widget = sip.wrapinstance(long(self._form), QtWidgets.QWidget)
         # legacy IDA PluginForm's
         else:
@@ -45,7 +45,7 @@ class DockableShim(object):
                 | idaapi.PluginForm.FORM_MENU
                 | idaapi.PluginForm.FORM_RESTORE
                 | idaapi.PluginForm.FORM_PERSIST
-                | 0x80) #idaapi.PluginForm.FORM_QWIDGET
+                | 0x80)  # idaapi.PluginForm.FORM_QWIDGET
             idaapi.open_tform(self._form, flags)
 
 
@@ -89,6 +89,7 @@ class ImagePreviewPlugin(idaapi.plugin_t):
         image_preview_form.widget.setLayout(layout)
         adapter.draw()
         image_preview_form.show()
+
 
 def PLUGIN_ENTRY():
     return ImagePreviewPlugin()

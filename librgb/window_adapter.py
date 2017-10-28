@@ -105,6 +105,8 @@ class GenericWindowAdapter(object):
         layout.addWidget(redraw_button)
 
     def define_shortcut(self, shortcut, widget, func):
+        # pylint: disable=unnecessary-lambda
+        # shortcuts don't get triggered if the func isn't wrapped in a lambda
         QtWidgets.QShortcut(
             QtGui.QKeySequence(shortcut), widget, lambda: func())
 
