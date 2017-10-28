@@ -1,41 +1,33 @@
-try:
-    from PySide import QtGui
-except ImportError:
-    from PyQt4 import QtGui
-
-
 class ShortcutManager(object):
     def __init__(self, window_adapter, params):
         self.window_adapter = window_adapter
         self.params = params
 
-    def register(self, widget):
-        if hasattr(widget, 'close'):
-            self._define(widget, 'Q', widget.close)
-        self._define(widget, 'G', self.window_adapter.change_address)
-        self._define(widget, 'Ctrl+S', self.window_adapter.save)
-        self._define(widget, 'H', self.resize_near_left)
-        self._define(widget, 'J', self.resize_near_down)
-        self._define(widget, 'K', self.resize_near_up)
-        self._define(widget, 'L', self.resize_near_right)
-        self._define(widget, 'Shift+H', self.resize_far_left)
-        self._define(widget, 'Shift+J', self.resize_far_down)
-        self._define(widget, 'Shift+K', self.resize_far_up)
-        self._define(widget, 'Shift+L', self.resize_far_right)
-        self._define(widget, 'Ctrl+F', self.toggle_flip)
-        self._define(widget, 'left', self.go_near_left)
-        self._define(widget, 'right', self.go_near_right)
-        self._define(widget, 'Shift+left', self.go_near_medium_left)
-        self._define(widget, 'Shift+right', self.go_near_medium_right)
-        self._define(widget, 'Ctrl+left', self.go_medium_left)
-        self._define(widget, 'Ctrl+right', self.go_medium_right)
-        self._define(widget, 'Ctrl+Shift+left', self.go_far_left)
-        self._define(widget, 'Ctrl+Shift+right', self.go_far_right)
-        self._define(widget, '<', self.go_to_prev_file)
-        self._define(widget, '>', self.go_to_next_file)
-
-    def _define(self, widget, shortcut, func):
-        QtGui.QShortcut(QtGui.QKeySequence(shortcut), widget, lambda: func())
+    @property
+    def shortcuts(self):
+        return {
+            'G': self.window_adapter.change_address,
+            'Ctrl+S': self.window_adapter.save,
+            'H': self.resize_near_left,
+            'J': self.resize_near_down,
+            'K': self.resize_near_up,
+            'L': self.resize_near_right,
+            'Shift+H': self.resize_far_left,
+            'Shift+J': self.resize_far_down,
+            'Shift+K': self.resize_far_up,
+            'Shift+L': self.resize_far_right,
+            'Ctrl+F': self.toggle_flip,
+            'left': self.go_near_left,
+            'right': self.go_near_right,
+            'Shift+left': self.go_near_medium_left,
+            'Shift+right': self.go_near_medium_right,
+            'Ctrl+left': self.go_medium_left,
+            'Ctrl+right': self.go_medium_right,
+            'Ctrl+Shift+left': self.go_far_left,
+            'Ctrl+Shift+right': self.go_far_right,
+            '<': self.go_to_prev_file,
+            '>': self.go_to_next_file,
+        }
 
     def resize_near_left(self):
         self.params.width -= 1

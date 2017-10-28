@@ -1,7 +1,4 @@
-try:
-    from PySide import QtGui
-except ImportError:
-    from PyQt4 import QtGui
+from librgb.qt_shims import QtGui
 from librgb.pixel_formats import PixelFormats
 
 try:

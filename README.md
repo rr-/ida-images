@@ -41,9 +41,11 @@ too bloated.
 
 ## Installing IDA plugin
 
-Either drop the `rgb-ida.py` file and `librgb` directory in `C:\Program Files
-(x86)\IDA 6.6\plugins` (or similar) and then run it via <kbd>Ctrl</kbd> +
+Either drop the `rgb-ida.py` file and `librgb` directory in `C:\Program
+Files\IDA 7.0\plugins` (or similar) and then run it via <kbd>Ctrl</kbd> +
 <kbd>3</kbd>, or run the script manually with <kbd>Alt</kbd> + <kbd>F9</kbd>.
+
+Tested on: IDA Pro 6.6, 6.8, 7.0
 
 ## Installing standalone version
 

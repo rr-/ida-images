@@ -1,22 +1,26 @@
 #!/bin/python3
-from PyQt4 import QtGui
-import librgb
 import argparse
 import os, sys
+import librgb
+from librgb.qt_shims import QtWidgets
 
 
-class MainWindow(QtGui.QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, params):
         super(MainWindow, self).__init__()
 
         adapter = librgb.GenericWindowAdapter(params)
-        librgb.ShortcutManager(adapter, params).register(self)
+        shortcut_manager = librgb.ShortcutManager(adapter, params)
+        for shortcut, func in shortcut_manager.shortcuts.items():
+            adapter.define_shortcut(shortcut, self, func)
+        adapter.define_shortcut('Q', self, self.close)
 
         layout = adapter.create_layout()
-        central_widget = QtGui.QWidget(self)
+        central_widget = QtWidgets.QWidget(self)
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
         adapter.draw()
+
 
 def parse_args():
     class CustomHelpFormatter(argparse.HelpFormatter):
@@ -78,7 +82,7 @@ def main():
     params.flip = args.flip
     params.brightness = args.brightness
 
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     win = MainWindow(params)
     win.show()
     app.exec_()
