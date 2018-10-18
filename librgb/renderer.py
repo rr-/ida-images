@@ -10,6 +10,7 @@ except ImportError:
 
 
 _FORMAT_MAP = {
+    PixelFormats.GRAY1: (1, QtGui.QImage.Format_Indexed8, False, False),
     PixelFormats.GRAY8: (1, QtGui.QImage.Format_Indexed8, False, False),
 
     PixelFormats.RGB555: (2, QtGui.QImage.Format_RGB555, True, False),
@@ -50,9 +51,26 @@ class Renderer(object):
 
         stride = params.width * channels
         data_size = params.height * stride
+        if params.format == PixelFormats.GRAY1:
+            data_size /= 8
+
         data = reader.get_padded_bytes(data_size)
         assert data is not None
         assert len(data) == data_size
+
+        if params.format == PixelFormats.GRAY1:
+            old_data = data
+            data = ''
+            data_size = data_size * 8
+            while len(old_data) > 0:
+                data += ''.join(
+                    ''.join(
+                        chr(((ord(byte) & (1 << bit)) >> bit) * 255)
+                        for byte in old_data[:stride]
+                    )
+                    for bit in range(8)
+                )
+                old_data = old_data[stride:]
 
         if params.flip:
             output = b''

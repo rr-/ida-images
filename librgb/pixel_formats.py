@@ -3,6 +3,7 @@ from collections import OrderedDict
 
 class PixelFormats(object):
     GRAY8 = 0
+    GRAY1 = 3
 
     BGR555 = 100
     BGR565 = 110
@@ -19,6 +20,7 @@ class PixelFormats(object):
     RGBA8888x = 232
 
     _NAME_MAP = [
+        (GRAY1, '1:Binary (1)', 'G1'),
         (GRAY8, '8:Grayscale (8)', 'G8'),
 
         (BGR555, '16:BGR (5-5-5)', 'BGR555'),
