@@ -48,6 +48,10 @@ class RendererParams(object):
     def height(self, value):
         self._height = max(1, value)
 
+    @property
+    def canvas_size(self):
+        return self.width * self.height
+
     def __setattr__(self, key, value):
         old_value = getattr(self, key) if hasattr(self, key) else None
         super(RendererParams, self).__setattr__(key, value)
@@ -57,7 +61,7 @@ class RendererParams(object):
 
     @property
     def shown_bytes(self):
-        return self.width * self.height * Renderer.get_byte_count(self.format)
+        return self.canvas_size * Renderer.get_bit_count(self.format) // 8
 
     def fire_redraw(self):
         if hasattr(self, 'draw_cb') and self.draw_cb:
