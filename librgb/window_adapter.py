@@ -14,6 +14,7 @@ class GenericWindowAdapter(object):
         self.width_box = None
         self.height_box = None
         self.address_label = None
+        self.size_label = None
         self.image_label = None
         self.flip_checkbox = None
 
@@ -86,11 +87,11 @@ class GenericWindowAdapter(object):
         layout.addWidget(goto_button)
 
     def add_address_label(self, layout):
-        address_label1 = QtWidgets.QLabel("Address:")
-        address_label2 = QtWidgets.QLabel("...")
-        layout.addWidget(address_label1)
-        layout.addWidget(address_label2)
-        self.address_label = address_label2
+        layout.addWidget(QtWidgets.QLabel("Address:"))
+        self.address_label = QtWidgets.QLabel("...")
+        self.size_label = QtWidgets.QLabel("...")
+        layout.addWidget(self.address_label)
+        layout.addWidget(self.size_label)
 
     def add_save_button(self, layout):
         save_button = QtWidgets.QPushButton("&Save...")
@@ -144,6 +145,10 @@ class GenericWindowAdapter(object):
             self.address_label.setText("UNAVAILABLE")
         else:
             self.address_label.setText(self.params.reader.address_text)
+            self.size_label.setText(
+                "(showing %d bytes)"
+                % (self.params.reader.address + self.params.shown_bytes)
+            )
         self.flip_checkbox.setCheckState(
             QtCore.Qt.Checked if self.params.flip else QtCore.Qt.Unchecked
         )
