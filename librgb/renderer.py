@@ -49,7 +49,7 @@ class Renderer(object):
         bits, qt_format, swap_rgb, invert_alpha = _FORMAT_MAP[params.format]
 
         stride = (params.width * bits) // 8
-        data_size = params.height * stride
+        data_size = params.shown_bytes
 
         data = reader.get_padded_bytes(data_size)
         assert data is not None
@@ -84,7 +84,8 @@ class Renderer(object):
         image = QtGui.QImage(
             data, params.width, params.height, stride, qt_format
         )
-        assert len(data) == image.byteCount()
+        if image.byteCount():
+            assert len(data) == image.byteCount()
 
         if swap_rgb:
             image = image.rgbSwapped()
