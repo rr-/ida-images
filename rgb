@@ -1,6 +1,8 @@
 #!/bin/python3
 import argparse
-import os, sys
+import os
+import sys
+
 import librgb
 from librgb.qt_shims import QtWidgets
 

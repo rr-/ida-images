@@ -1,7 +1,5 @@
 from librgb.pixel_formats import PixelFormats
-from librgb.qt_shims import QtCore
-from librgb.qt_shims import QtGui
-from librgb.qt_shims import QtWidgets
+from librgb.qt_shims import QtCore, QtGui, QtWidgets
 from librgb.renderer import Renderer
 
 

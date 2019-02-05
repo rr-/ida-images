@@ -3,7 +3,6 @@ import librgb
 from librgb.qt_shims import QtGui  # important for PySide legacy IDA
 from librgb.qt_shims import QtWidgets
 
-
 try:
     MAJOR, MINOR = map(int, idaapi.get_kernel_version().split("."))
 except AttributeError:

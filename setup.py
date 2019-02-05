@@ -1,6 +1,5 @@
 from distutils.core import setup
 
-
 setup(
     name='rgb',
     url='https://github.com/rr-/ida-images',

@@ -1,5 +1,5 @@
-from librgb.qt_shims import QtGui
 from librgb.pixel_formats import PixelFormats
+from librgb.qt_shims import QtGui
 
 try:
     import numpy
