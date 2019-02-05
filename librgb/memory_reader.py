@@ -17,7 +17,7 @@ class MemoryRange(object):
         return self.end - self.start
 
     def __str__(self):
-        return 'start: %08x end: %08x' % (self.start, self.end)
+        return "start: %08x end: %08x" % (self.start, self.end)
 
 
 # Reads continuous memory chunk even if it spans accross multiple segments.
@@ -38,7 +38,8 @@ class MemoryReader(Reader):
             if segment.type == idaapi.SEG_XTRN:
                 continue
             valid_memory_ranges.append(
-                MemoryRange(segment.startEA, segment.endEA))
+                MemoryRange(segment.startEA, segment.endEA)
+            )
 
         while len(ranges_left) > 0:
             # Get a requested memory range and remove it from the list
@@ -57,18 +58,23 @@ class MemoryReader(Reader):
                 continue
 
             chunk = idc.GetManyBytes(
-                intersection.start,
-                intersection.end - intersection.start)
+                intersection.start, intersection.end - intersection.start
+            )
             if chunk is None:
-                print('[librgb] Some bytes are unreadable in %s..%s' % (
-                    idc.atoa(intersection.start),
-                    idc.atoa(intersection.end)))
+                print(
+                    "[librgb] Some bytes are unreadable in %s..%s"
+                    % (
+                        idc.atoa(intersection.start),
+                        idc.atoa(intersection.end),
+                    )
+                )
                 continue
 
-            result = \
-                result[0:intersection.start - self.address] \
-                + chunk \
-                + result[intersection.end - self.address:]
+            result = (
+                result[0 : intersection.start - self.address]
+                + chunk
+                + result[intersection.end - self.address :]
+            )
             assert len(result) == size
 
             # If necessary, enqueue ranges unsatisfied by chosen mem segment

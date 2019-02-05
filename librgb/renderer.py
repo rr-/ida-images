@@ -3,9 +3,10 @@ from librgb.qt_shims import QtGui
 
 try:
     import numpy
+
     HAS_NUMPY = True
 except ImportError:
-    print('[librgb] Brightness adjustment will be slow without numpy')
+    print("[librgb] Brightness adjustment will be slow without numpy")
     HAS_NUMPY = False
 
 
@@ -13,14 +14,12 @@ _FORMAT_MAP = {
     PixelFormats.GRAY1MSB: (1, QtGui.QImage.Format_Mono, False, False),
     PixelFormats.GRAY1LSB: (1, QtGui.QImage.Format_MonoLSB, False, False),
     PixelFormats.GRAY8: (8, QtGui.QImage.Format_Indexed8, False, False),
-
     PixelFormats.RGB555: (16, QtGui.QImage.Format_RGB555, True, False),
     PixelFormats.RGB565: (16, QtGui.QImage.Format_RGB16, True, False),
     PixelFormats.RGB888: (24, QtGui.QImage.Format_RGB888, True, False),
     PixelFormats.RGBA8888: (32, QtGui.QImage.Format_ARGB32, True, False),
     PixelFormats.RGBA8888i: (32, QtGui.QImage.Format_ARGB32, True, True),
     PixelFormats.RGBA8888x: (32, QtGui.QImage.Format_RGB32, True, False),
-
     PixelFormats.BGR555: (16, QtGui.QImage.Format_RGB555, False, False),
     PixelFormats.BGR565: (16, QtGui.QImage.Format_RGB16, False, False),
     PixelFormats.BGR888: (24, QtGui.QImage.Format_RGB888, False, False),
@@ -47,8 +46,7 @@ class Renderer(object):
         if params.format not in _FORMAT_MAP:
             raise NotImplementedError()
 
-        bits, qt_format, swap_rgb, invert_alpha = \
-            _FORMAT_MAP[params.format]
+        bits, qt_format, swap_rgb, invert_alpha = _FORMAT_MAP[params.format]
 
         stride = (params.width * bits) // 8
         data_size = params.height * stride
@@ -58,10 +56,10 @@ class Renderer(object):
         assert len(data) == data_size
 
         if params.flip:
-            output = b''
+            output = b""
             for y in range(params.height):
                 y2 = params.height - 1 - y
-                output += data[y2 * stride:(y2 + 1) * stride]
+                output += data[y2 * stride : (y2 + 1) * stride]
             data = output
 
         if params.brightness != 50.0:
@@ -84,11 +82,8 @@ class Renderer(object):
                 data = output
 
         image = QtGui.QImage(
-            data,
-            params.width,
-            params.height,
-            stride,
-            qt_format)
+            data, params.width, params.height, stride, qt_format
+        )
         assert len(data) == image.byteCount()
 
         if swap_rgb:

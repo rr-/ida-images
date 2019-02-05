@@ -55,7 +55,7 @@ class RendererParams(object):
     def __setattr__(self, key, value):
         old_value = getattr(self, key) if hasattr(self, key) else None
         super(RendererParams, self).__setattr__(key, value)
-        if key.startswith('_') or key == 'draw_cb' or old_value == value:
+        if key.startswith("_") or key == "draw_cb" or old_value == value:
             return
         self.fire_redraw()
 
@@ -64,7 +64,7 @@ class RendererParams(object):
         return self.canvas_size * Renderer.get_bit_count(self.format) // 8
 
     def fire_redraw(self):
-        if hasattr(self, 'draw_cb') and self.draw_cb:
+        if hasattr(self, "draw_cb") and self.draw_cb:
             self.draw_cb()
 
     def use_prev_reader(self):

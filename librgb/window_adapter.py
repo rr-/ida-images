@@ -55,11 +55,11 @@ class GenericWindowAdapter(object):
     def add_flip_checkbox(self, layout):
         self.flip_checkbox = QtWidgets.QCheckBox()
         self.flip_checkbox.stateChanged.connect(self.flip_changed)
-        self.flip_checkbox.setText('Flip vertically')
+        self.flip_checkbox.setText("Flip vertically")
         layout.addWidget(self.flip_checkbox)
 
     def add_brightness_box(self, layout):
-        layout.addWidget(QtWidgets.QLabel('Brightness:'))
+        layout.addWidget(QtWidgets.QLabel("Brightness:"))
         self.brightness_box = QtWidgets.QDoubleSpinBox()
         self.brightness_box.setMinimum(0.0)
         self.brightness_box.setMaximum(100.0)
@@ -72,7 +72,7 @@ class GenericWindowAdapter(object):
         self.width_box.setMaximum(4096)
         self.width_box.valueChanged.connect(self.width_changed)
         layout.addWidget(self.width_box)
-        layout.addWidget(QtWidgets.QLabel('x'))
+        layout.addWidget(QtWidgets.QLabel("x"))
         self.height_box = QtWidgets.QSpinBox()
         self.height_box.setMinimum(1)
         self.height_box.setMaximum(4096)
@@ -80,25 +80,25 @@ class GenericWindowAdapter(object):
         layout.addWidget(self.height_box)
 
     def add_goto_button(self, layout):
-        goto_button = QtWidgets.QPushButton('&Go to... [G]')
+        goto_button = QtWidgets.QPushButton("&Go to... [G]")
         goto_button.setDefault(True)
         goto_button.clicked.connect(self.change_address)
         layout.addWidget(goto_button)
 
     def add_address_label(self, layout):
-        address_label1 = QtWidgets.QLabel('Address:')
-        address_label2 = QtWidgets.QLabel('...')
+        address_label1 = QtWidgets.QLabel("Address:")
+        address_label2 = QtWidgets.QLabel("...")
         layout.addWidget(address_label1)
         layout.addWidget(address_label2)
         self.address_label = address_label2
 
     def add_save_button(self, layout):
-        save_button = QtWidgets.QPushButton('&Save...')
+        save_button = QtWidgets.QPushButton("&Save...")
         save_button.clicked.connect(self.save)
         layout.addWidget(save_button)
 
     def add_redraw_button(self, layout):
-        redraw_button = QtWidgets.QPushButton('&Redraw')
+        redraw_button = QtWidgets.QPushButton("&Redraw")
         redraw_button.clicked.connect(self.draw)
         layout.addWidget(redraw_button)
 
@@ -106,7 +106,8 @@ class GenericWindowAdapter(object):
         # pylint: disable=unnecessary-lambda
         # shortcuts don't get triggered if the func isn't wrapped in a lambda
         QtWidgets.QShortcut(
-            QtGui.QKeySequence(shortcut), widget, lambda: func())
+            QtGui.QKeySequence(shortcut), widget, lambda: func()
+        )
 
     def flip_changed(self, state):
         self.params.flip = state == QtCore.Qt.Checked
@@ -121,8 +122,9 @@ class GenericWindowAdapter(object):
         self.params.height = value
 
     def format_changed(self, _index):
-        self.params.format = \
-            self.format_box.itemData(self.format_box.currentIndex())
+        self.params.format = self.format_box.itemData(
+            self.format_box.currentIndex()
+        )
 
     def change_address(self):
         address = self.ask_address(self.params.reader.address)
@@ -133,23 +135,24 @@ class GenericWindowAdapter(object):
     def save(self):
         path = self.ask_file()
         if path is not None:
-            self.image_label.pixmap().save(path, 'PNG')
+            self.image_label.pixmap().save(path, "PNG")
 
     def draw(self):
         self.params.draw_cb = None
 
         if self.params.reader is None:
-            self.address_label.setText('UNAVAILABLE')
+            self.address_label.setText("UNAVAILABLE")
         else:
-            self.address_label.setText(
-                self.params.reader.address_text)
+            self.address_label.setText(self.params.reader.address_text)
         self.flip_checkbox.setCheckState(
-            QtCore.Qt.Checked if self.params.flip else QtCore.Qt.Unchecked)
+            QtCore.Qt.Checked if self.params.flip else QtCore.Qt.Unchecked
+        )
         self.brightness_box.setValue(self.params.brightness)
         self.width_box.setValue(self.params.width)
         self.height_box.setValue(self.params.height)
         self.format_box.setCurrentIndex(
-            self.format_box.findData(self.params.format))
+            self.format_box.findData(self.params.format)
+        )
 
         pixmap = Renderer(self.params).get_pixmap()
         self.image_label.setPixmap(pixmap)
@@ -159,14 +162,16 @@ class GenericWindowAdapter(object):
     def ask_address(self, address):
         text, confirmed = QtWidgets.QInputDialog.getText(
             None,
-            'Input Dialog',
-            'Please enter an hexadecimal address:',
-            text='%X' % address)
+            "Input Dialog",
+            "Please enter an hexadecimal address:",
+            text="%X" % address,
+        )
         if confirmed:
             return int(text, 16)
         return None
 
     def ask_file(self):
         ret, _ = QtWidgets.QFileDialog.getSaveFileName(
-            caption='Save the image as...', filter='*.png')
+            caption="Save the image as...", filter="*.png"
+        )
         return ret

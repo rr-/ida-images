@@ -7,7 +7,7 @@ try:
     MAJOR, MINOR = map(int, idaapi.get_kernel_version().split("."))
 except AttributeError:
     MAJOR, MINOR = 6, 6
-USING_IDA7API = (MAJOR > 6)
+USING_IDA7API = MAJOR > 6
 USING_PYQT5 = USING_IDA7API or (MAJOR == 6 and MINOR >= 9)
 
 
@@ -18,6 +18,7 @@ class DockableShim(object):
         # IDA 7+ Widgets
         if USING_IDA7API:
             import sip
+
             self._form = idaapi.create_empty_widget(self._title)
             self.widget = sip.wrapinstance(long(self._form), QtWidgets.QWidget)
         # legacy IDA PluginForm's
@@ -34,7 +35,8 @@ class DockableShim(object):
                 idaapi.PluginForm.WOPN_TAB
                 | idaapi.PluginForm.WOPN_MENU
                 | idaapi.PluginForm.WOPN_RESTORE
-                | idaapi.PluginForm.WOPN_PERSIST)
+                | idaapi.PluginForm.WOPN_PERSIST
+            )
             idaapi.display_widget(self._form, flags)
 
         # legacy IDA PluginForm's
@@ -44,16 +46,17 @@ class DockableShim(object):
                 | idaapi.PluginForm.FORM_MENU
                 | idaapi.PluginForm.FORM_RESTORE
                 | idaapi.PluginForm.FORM_PERSIST
-                | 0x80)  # idaapi.PluginForm.FORM_QWIDGET
+                | 0x80
+            )  # idaapi.PluginForm.FORM_QWIDGET
             idaapi.open_tform(self._form, flags)
 
 
 class ImagePreviewPlugin(idaapi.plugin_t):
     flags = 0
-    wanted_name = 'Image previewer'
-    wanted_hotkey = 'Alt + I'
-    comment = 'Preview memory as image'
-    help = 'https://github.com/rr-/ida-images'
+    wanted_name = "Image previewer"
+    wanted_hotkey = "Alt + I"
+    comment = "Preview memory as image"
+    help = "https://github.com/rr-/ida-images"
 
     def init(self):
         return idaapi.PLUGIN_OK
@@ -64,12 +67,12 @@ class ImagePreviewPlugin(idaapi.plugin_t):
     def run(self, arg):
         class IdaWindowAdapter(librgb.GenericWindowAdapter):
             def ask_address(self, address):
-                return AskAddr(address, 'Please enter an address')
+                return AskAddr(address, "Please enter an address")
 
             def ask_file(self):
-                return AskFile(1, '*.png', 'Save the image as...')
+                return AskFile(1, "*.png", "Save the image as...")
 
-        image_preview_form = DockableShim('Image preview')
+        image_preview_form = DockableShim("Image preview")
 
         params = librgb.RendererParams()
         params.readers = [librgb.MemoryReader()]
@@ -94,5 +97,5 @@ def PLUGIN_ENTRY():
     return ImagePreviewPlugin()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ImagePreviewPlugin().run(0)
