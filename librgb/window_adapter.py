@@ -146,8 +146,7 @@ class GenericWindowAdapter(object):
         else:
             self.address_label.setText(self.params.reader.address_text)
             self.size_label.setText(
-                "(showing %d bytes)"
-                % (self.params.reader.address + self.params.shown_bytes)
+                "(showing %d bytes)" % self.params.shown_bytes
             )
         self.flip_checkbox.setCheckState(
             QtCore.Qt.Checked if self.params.flip else QtCore.Qt.Unchecked
