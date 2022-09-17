@@ -1,5 +1,6 @@
 import idaapi
 import librgb
+import ida_kernwin
 from librgb.qt_shims import QtGui  # important for PySide legacy IDA
 from librgb.qt_shims import QtWidgets
 
@@ -20,7 +21,7 @@ class DockableShim(object):
             import sip
 
             self._form = idaapi.create_empty_widget(self._title)
-            self.widget = sip.wrapinstance(long(self._form), QtWidgets.QWidget)
+            self.widget = sip.wrapinstance(int(self._form), QtWidgets.QWidget)
         # legacy IDA PluginForm's
         else:
             self._form = idaapi.create_tform(self._title, None)
@@ -67,10 +68,10 @@ class ImagePreviewPlugin(idaapi.plugin_t):
     def run(self, arg):
         class IdaWindowAdapter(librgb.GenericWindowAdapter):
             def ask_address(self, address):
-                return AskAddr(address, "Please enter an address")
+                return ida_kernwin.ask_addr(address, "Please enter an address")
 
             def ask_file(self):
-                return AskFile(1, "*.png", "Save the image as...")
+                return ida_kernwin.ask_file(1, "*.png", "Save the image as...")
 
         image_preview_form = DockableShim("Image preview")
 

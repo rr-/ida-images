@@ -27,7 +27,7 @@ class MemoryReader(Reader):
         super(MemoryReader, self).__init__()
 
     def get_padded_bytes(self, size):
-        result = "\x00" * size
+        result = b"\x00" * size
         ranges_left = [MemoryRange(self.address, self.address + size)]
 
         segment_count = idaapi.get_segm_qty()
@@ -38,7 +38,7 @@ class MemoryReader(Reader):
             if segment.type == idaapi.SEG_XTRN:
                 continue
             valid_memory_ranges.append(
-                MemoryRange(segment.startEA, segment.endEA)
+                MemoryRange(segment.start_ea, segment.end_ea)
             )
 
         while len(ranges_left) > 0:
@@ -57,7 +57,7 @@ class MemoryReader(Reader):
             if intersection is None:
                 continue
 
-            chunk = idc.GetManyBytes(
+            chunk = idc.get_bytes(
                 intersection.start, intersection.end - intersection.start
             )
             if chunk is None:
@@ -80,9 +80,9 @@ class MemoryReader(Reader):
             # If necessary, enqueue ranges unsatisfied by chosen mem segment
             range1 = MemoryRange(current_range.start, intersection.start)
             range2 = MemoryRange(intersection.end, current_range.end)
-            if range1.length > 0:
+            if range1.length() > 0:
                 ranges_left.append(range1)
-            if range2.length > 0:
+            if range2.length() > 0:
                 ranges_left.append(range2)
 
         assert len(result) == size
